@@ -25,6 +25,12 @@ This project involves creating a clone of Amazon's web application. It includes 
 - Shopping Cart Functionality
 - Inventory Management System for Admin
 - Order Management
+- Purchase Order
+- Sales order
+- Supplier
+- Warehouse Management
+- User Management
+- Multi Level Ecommerce Website
 - Responsive Design
 
 ## Getting Started
@@ -36,7 +42,7 @@ Ensure you have the following installed on your local development machine:
 - Python (>= 3.6)
 - Node.js (>= 14.0)
 - npm (>= 6.0)
-- Django (>= 3.1)
+- Django (>= 5.0)
 - React (>= 17.0)
 - MySQL Server
 
