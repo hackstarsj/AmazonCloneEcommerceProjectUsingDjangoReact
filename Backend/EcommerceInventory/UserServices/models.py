@@ -16,7 +16,7 @@ class Users(AbstractUser):
     role=models.CharField(max_length=50,blank=True,null=True,choices=(('Admin','Admin'),('User','User'),('Supplier','Supplier'),('Customer','Customer'),('Staff','Staff'),('Manager','Manager')))
     dob=models.DateField(blank=True,null=True)
     username=models.CharField(max_length=50,unique=True)
-    password=models.CharField(max_length=50)
+    password=models.CharField(max_length=255)
     social_media_links=models.JSONField(blank=True,null=True)
     addition_details=models.JSONField(blank=True,null=True)
     language=models.CharField(max_length=50,blank=True,null=True,choices=(('English','English'),('Hindi','Hindi'),('Spanish','Spanish'),('French','French'),('German','German'),('Italian','Italian'),('Portuguese','Portuguese'),('Russian','Russian'),('Chinese','Chinese'),('Japanese','Japanese'),('Korean','Korean'),('Arabic','Arabic'),('Turkish','Turkish'),('Dutch','Dutch'),('Polish','Polish'),('Swedish','Swedish'),('Danish','Danish'),('Norwegian','Norwegian'),('Finnish','Finnish'),('Greek','Greek'),('Czech','Czech'),('Hungarian','Hungarian'),('Romanian','Romanian'),('Bulgarian','Bulgarian'),('Croatian','Croatian'),('Slovak','Slovak'),('Slovenian','Slovenian'),('Lithuanian','Lithuanian'),('Latvian','Latvian'),('Estonian','Estonian'),('Ukrainian','Ukrainian'),('Belarusian','Belarusian'),('Serbian','Serbian'),('Macedonian','Macedonian'),('Bosnian','Bosnian'),('Albanian','Albanian'),('Montenegrin','Montenegrin'),('Catalan','Catalan'),('Basque','Basque'),('Galician','Galician'),('Welsh','Welsh'),('Irish','Irish'),('Scots Gaelic','Scots Gaelic'),('Manx','Manx'),('Cornish','Cornish'),('Breton','Breton')))
