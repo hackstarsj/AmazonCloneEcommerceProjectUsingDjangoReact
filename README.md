@@ -5,6 +5,9 @@ Welcome to the Amazon Clone Project! This project is based on a tutorial series 
 ## ER Diagram
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/ER_Diagram.png" alt="Amazon Clone Project ER Diagram" style="width: 100%;"/>
 
+## API Documentation 
+
+- **API Documentaion for Post Man**: [API Documentaion](https://documenter.getpostman.com/view/5800143/2sA3QmEawp)
 
 ## YouTube Tutorial Series
 
