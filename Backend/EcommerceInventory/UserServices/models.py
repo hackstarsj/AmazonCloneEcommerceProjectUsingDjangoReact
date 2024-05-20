@@ -32,6 +32,9 @@ class Users(AbstractUser):
     plan_type=models.CharField(max_length=50,blank=True,null=True,choices=(('Free','Free'),('Basic','Basic'),('Standard','Standard'),('Premium','Premium'),('Enterprise','Enterprise')))
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+
+    def defaultkey():
+        return 'username'
     
 
 class UserShippingAddress(models.Model):
