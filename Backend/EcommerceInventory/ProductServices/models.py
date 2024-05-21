@@ -5,7 +5,7 @@ from UserServices.models import Users
 # Create your models here.
 class Categories(models.Model):
     id=models.AutoField(primary_key=True)
-    name=models.CharField(max_length=255,blank=True,null=True)
+    name=models.CharField(max_length=255)
     image=models.TextField()
     description=models.TextField()
     display_order=models.IntegerField(default=0)
