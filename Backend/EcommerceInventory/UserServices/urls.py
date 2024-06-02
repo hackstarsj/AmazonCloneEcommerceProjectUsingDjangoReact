@@ -6,4 +6,5 @@ urlpatterns = [
     path('signup/',AuthController.SignupAPIView.as_view(),name='signup'),
     path('publicApi/',AuthController.PublicAPIView.as_view(),name='publicapi'),
     path('protectedApi/',AuthController.ProtectedAPIView.as_view(),name='protectedapi'),
+    path('superadminurl/',AuthController.SuperAdminCheckApi.as_view(),name='superadminurl'),
 ]

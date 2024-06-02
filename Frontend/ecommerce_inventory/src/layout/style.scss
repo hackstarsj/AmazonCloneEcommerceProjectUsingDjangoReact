@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+.sidebar .css-17cucas-MuiList-root .MuiListItem-root{
+    margin: 4px 4px;
+}
+.appbar{
+    box-shadow: 0px 0px 0px!important;
+}
+body *{
+    font-family: "Roboto", sans-serif!important;
+}
+.sidebar .css-qklaqr-MuiListItemIcon-root{
+    min-width: 40px;
+}
+img.logo{
+    padding: 0px 20px;
+}
+/* Custom scrollbar for Webkit browsers */
+// ::-webkit-scrollbar {
+//     width: 12px;
+//     height: 12px;
+// }
+
+// ::-webkit-scrollbar-track {
+//     background: #f1f1f1;
+//     border-radius: 10px;
+// }
+
+// ::-webkit-scrollbar-thumb {
+//     background-color: #888; 
+//     border-radius: 10px;
+//     border: 3px solid #f1f1f1;
+// }
+
+// ::-webkit-scrollbar-thumb:hover {
+//     background: #555;
+// }
+
+// /* Custom scrollbar for Firefox */
+// html {
+//     scrollbar-width: thin; /* options: auto, thin, none */
+//     scrollbar-color: #888 #f1f1f1; /* thumb color, track color */
+// }
+
+.sidebar li{
+    cursor: pointer;
+}

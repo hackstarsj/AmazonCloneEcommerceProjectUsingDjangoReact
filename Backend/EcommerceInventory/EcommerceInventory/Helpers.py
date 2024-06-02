@@ -1,4 +1,8 @@
 from django.db.models import ForeignKey
+from rest_framework.response import Response
+from rest_framework.views import exception_handler 
+from rest_framework.exceptions import AuthenticationFailed,NotAuthenticated,PermissionDenied
+
 def getDynamicFormModels():
     return {
         'product':'ProductServices.Products',
@@ -57,3 +61,38 @@ def getDynamicFormFields(model_instance,domain_user_id):
                 fielddata['type']='select'
         fields[fielddata['type']].append(fielddata)                
     return fields
+
+
+def renderResponse(data,message,status=200):
+    if status>=200 and status<300:
+        return Response({'data':data,'message':message},status=status)
+    else:
+        if isinstance(data,dict):
+            return Response({'errors':parseDictToList(data),'message':message},status=status)
+        elif isinstance(data,list):
+            return Response({'errors':data,'message':message},status=status)
+        else:
+            return Response({'errors':[data],'message':message},status=status)
+        
+def parseDictToList(data):
+    values=[]
+    for key,value in data.items():
+        values.extend(value)
+    return values
+
+def custom_exception_handler(exc, context):
+    response=exception_handler(exc,context)
+
+    if isinstance(exc,AuthenticationFailed):
+        response_data={
+            'message':exc.detail,
+            'errors':exc.detail.get('messages',[])
+        }
+        return renderResponse(data=response_data['errors'],message=response_data['message']['detail'],status=exc.status_code)
+    elif isinstance(exc,NotAuthenticated):
+        return renderResponse(data='User Not Authenticated',message='User Not Authenticated',status=exc.status_code)
+    elif isinstance(exc,PermissionDenied):
+        return renderResponse(data="You Don't Have Permission to Access this page",message='Permission Denied',status=exc.status_code)
+    return response
+        
+    

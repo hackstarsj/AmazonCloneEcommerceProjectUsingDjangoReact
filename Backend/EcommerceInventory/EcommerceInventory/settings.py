@@ -58,6 +58,10 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+REST_FRAMEWORK={
+    'EXCEPTION_HANDLER':'EcommerceInventory.Helpers.custom_exception_handler'
+}
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]

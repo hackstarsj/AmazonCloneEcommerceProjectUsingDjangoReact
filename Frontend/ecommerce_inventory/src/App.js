@@ -1,22 +1,39 @@
 import './App.css';
-import AuthScreen from './pages/AuthScreen';
 import Home from './pages/Home';
-import Layout from './utils/Layout';
+import Layout from './layout/layout';
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import ProtectedRoute from './utils/ProtectedRoute';
+import {ToastContainer} from 'react-toastify';
+import Auth from './pages/Auth';
+
+const sidebarItems=[
+  {name:"Home",link:"/home",icon:"home"},
+  {name:"Products",link:"/products",icon:"products"},
+  {name:"Categories",icon:"categories",children:[{name:"All Categories",link:"/categories"},{name:"Add Category",link:"/categories/add"}]},
+  {name:"Orders",link:"/orders",icon:"orders"},
+  {name:"Users",link:"/users",icon:"users"},
+  {name:"Settings",link:"/settings",icon:"settings"},
+]
 
 const router=createBrowserRouter(
   [
-    {path:"/",element:<AuthScreen/>},
-    {path:"/home",element:<ProtectedRoute element={<Home/>}/>},
+    {path:"/auth",element:<Auth/>},
+    {
+      path:"/",
+      element:<Layout sidebarList={sidebarItems}/>,
+      children:[
+        {path:"home",element:<ProtectedRoute element={<Home/>}/>}
+      ]},
   ]
 )
 
 function App() {
   return (
-    <Layout>
+    <>
         <RouterProvider router={router}/>
-    </Layout>
+        <ToastContainer position="bottom-right" autoclose={3000} hideProgressBar={false} style={{marginBottom:'30px'}}/>
+
+    </>
   );
 }
 

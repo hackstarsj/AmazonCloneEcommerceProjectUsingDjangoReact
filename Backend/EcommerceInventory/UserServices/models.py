@@ -13,7 +13,7 @@ class Users(AbstractUser):
     country=models.CharField(max_length=50,blank=True,null=True,choices=(('India','India'),('USA','USA'),('UK','UK'),('Australia','Australia'),('Canada','Canada'),('Germany','Germany'),('France','France'),('Italy','Italy'),('Japan','Japan'),('China','China'),('Russia','Russia'),('Brazil','Brazil'),('South Africa','South Africa'),('Nigeria','Nigeria'),('Mexico','Mexico'),('Argentina','Argentina'),('Spain','Spain'),('Portugal','Portugal'),('Greece','Greece'),('Sweden','Sweden'),('Norway','Norway'),('Finland','Finland'),('Denmark','Denmark'),('Netherlands','Netherlands'),('Belgium','Belgium'),('Switzerland','Switzerland'),('Austria','Austria'),('Poland','Poland'),('Czech Republic','Czech Republic'),('Turkey','Turkey'),('Ukraine','Ukraine'),('Hungary','Hungary'),('Romania','Romania'),('Bulgaria','Bulgaria'),('Croatia','Croatia'),('Slovenia','Slovenia'),('Slovakia','Slovakia'),('Lithuania','Lithuania'),('Latvia','Latvia'),('Estonia','Estonia'),('Ireland','Ireland'),('Scotland','Scotland'),('Wales','Wales'),('Northern Ireland','Northern Ireland'),('New Zealand','New Zealand'),('Singapore','Singapore'),('Malaysia','Malaysia'),('Thailand','Thailand'),('Indonesia','Indonesia'),('Philippines','Philippines'),('Vietnam','Vietnam'),('South Korea','South Korea'),('North Korea','North Korea'),('Taiwan','Taiwan'),('Hong Kong','Hong Kong'),('Macau','Macau'),('Bangladesh','Bangladesh'),('Pakistan','Pakistan'),('Sri Lanka','Sri Lanka'),('Nepal','Nepal'),('Bhutan','Bhutan'),('Maldives','Maldives'),('Afghanistan','Afghanistan'),('Iran','Iran'),('Iraq','Iraq'),('Syria','Syria'),('Lebanon','Lebanon')))
     profile_pic=models.TextField()
     account_status=models.CharField(max_length=50,blank=True,null=True,choices=(('Active','Active'),('Inactive','Inactive'),('Blocked','Blocked')))
-    role=models.CharField(max_length=50,blank=True,null=True,choices=(('Admin','Admin'),('User','User'),('Supplier','Supplier'),('Customer','Customer'),('Staff','Staff'),('Manager','Manager')))
+    role=models.CharField(max_length=50,blank=True,null=True,choices=(('Admin','Admin'),('User','User'),('Supplier','Supplier'),('Customer','Customer'),('Staff','Staff'),('Manager','Manager'),('Super Admin','Super Admin')))
     dob=models.DateField(blank=True,null=True)
     username=models.CharField(max_length=50,unique=True)
     password=models.CharField(max_length=255)
@@ -35,6 +35,11 @@ class Users(AbstractUser):
 
     def defaultkey():
         return 'username'
+    
+    def save(self, *args, **kwargs):
+        if not self.domain_user_id and self.id:
+            self.domain_user_id=Users.objects.get(id=self.id)
+        super().save(*args, **kwargs)
     
 
 class UserShippingAddress(models.Model):

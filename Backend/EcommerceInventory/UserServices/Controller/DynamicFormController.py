@@ -1,4 +1,4 @@
-from EcommerceInventory.Helpers import getDynamicFormFields, getDynamicFormModels, getExludeFields
+from EcommerceInventory.Helpers import getDynamicFormFields, getDynamicFormModels, getExludeFields, renderResponse
 from UserServices.models import Users
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -15,7 +15,7 @@ class DynamicFormController(APIView):
     def post(self,request,modelName):
         #Checking if Model Exist in Our Dynamic Form Models
         if modelName not in getDynamicFormModels():
-            return Response({'error':'Model Not Exist'},status=404)
+            return renderResponse(data='Model Not Exist',message='Model Not Exist',status=404)
         
         #Getting the Model Name from Dynamic Form Models
         model=getDynamicFormModels()[modelName]
@@ -24,7 +24,7 @@ class DynamicFormController(APIView):
 
         #Checking if Model Class Exist
         if model_class is None:
-            return Response({'error':'Model not found'},status=404)
+            return renderResponse(data='Model Not Found',message='Model Not Found',status=404)
         
         #Getting the Model Fields Info
         fields_info=model_class._meta.fields
@@ -40,7 +40,7 @@ class DynamicFormController(APIView):
         missing_fields=[field for field in required_fields if field not in request.data]
         #If Missing Fields Exist
         if missing_fields:
-            return Response({"error":[f'The Following field in required : {field}' for field in missing_fields]},status=400)
+            return renderResponse(data=[f'The Following field in required : {field}' for field in missing_fields],message='Validation Error',status=400)
         
         #Creating a Copy of Post Data for Manipulation
         fields=request.data.copy()
@@ -65,7 +65,7 @@ class DynamicFormController(APIView):
                 try:
                     fieldsdata[field.name]=related_model.objects.get(id=fieldsdata[field.name])
                 except related_model.DoesNotExist:
-                    return Response({'error':f'{field.name} Relation Not Exist found'},status=404)
+                    return renderResponse(data=f'{field.name} Relation Not Exist found',message=f'{field.name} Relation Not Exist found',status=404)
 
         #Creating the Model Instance and Saving the Data in the Database
         model_instace=model_class.objects.create(**fieldsdata)
@@ -78,19 +78,19 @@ class DynamicFormController(APIView):
         response_json=model_json[0]['fields']
         response_json['id']=model_json[0]['pk']
         #Returning the Response
-        return Response({'data':response_json,'message':'Data saved successfully'})
+        return renderResponse(data=response_json,message='Data saved successfully')
 
     def get(self,request,modelName):
         if modelName not in getDynamicFormModels():
-            return Response({'error':'Model not found'},status=404)
+            return renderResponse(data='Model Not Found',message='Model Not Found',status=404)
         
         model = getDynamicFormModels()[modelName]
         model_class=apps.get_model(model)
 
         if model_class is None:
-            return Response({'error':'Model not found'},status=404)
+            return renderResponse(data='Model Not Found',message='Model Not Found',status=404)
         
 
         model_instance = model_class()
         fields=getDynamicFormFields(model_instance,request.user.domain_user_id)
-        return Response({'data':fields,'message':'Form fields fetched successfully'})
+        return renderResponse(data=fields,message='Form fields fetched successfully')
