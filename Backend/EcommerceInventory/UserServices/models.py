@@ -57,13 +57,13 @@ class UserShippingAddress(models.Model):
 class Modules(models.Model):
     id=models.AutoField(primary_key=True)
     module_name=models.CharField(max_length=50,unique=True)
-    module_icon=models.TextField()
+    module_icon=models.CharField(null=True,blank=True,max_length=50)
     is_menu=models.BooleanField(default=True)
     is_active=models.BooleanField(default=True)
-    module_url=models.TextField()
+    module_url=models.CharField(null=True,blank=True,max_length=50)
     parent_id=models.ForeignKey('self',on_delete=models.CASCADE,blank=True,null=True)
     display_order=models.IntegerField(default=0)
-    module_description=models.TextField()
+    module_description=models.CharField(null=True,blank=True,max_length=255)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 

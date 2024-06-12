@@ -10,6 +10,11 @@ def getDynamicFormModels():
         'warehouse':'InventoryServices.Warehouse',
     }
 
+def getSuperAdminDynamicFormModels():
+    return {
+        'modules':'UserServices.Modules',
+    }
+
 def checkisFileField(field):
     return field in ['image','file','path','video','audio']
 
