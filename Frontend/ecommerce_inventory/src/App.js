@@ -5,29 +5,35 @@ import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import ProtectedRoute from './utils/ProtectedRoute';
 import {ToastContainer} from 'react-toastify';
 import Auth from './pages/Auth';
+import store from './redux/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
+import { fetchSidebar } from './redux/reducer/sidebardata';
+import { useEffect,useState } from 'react';
 
-const sidebarItems=[
-  {name:"Home",link:"/home",icon:"home"},
-  {name:"Products",link:"/products",icon:"products"},
-  {name:"Categories",icon:"categories",children:[{name:"All Categories",link:"/categories"},{name:"Add Category",link:"/categories/add"}]},
-  {name:"Orders",link:"/orders",icon:"orders"},
-  {name:"Users",link:"/users",icon:"users"},
-  {name:"Settings",link:"/settings",icon:"settings"},
-]
-
-const router=createBrowserRouter(
-  [
-    {path:"/auth",element:<Auth/>},
-    {
-      path:"/",
-      element:<Layout sidebarList={sidebarItems}/>,
-      children:[
-        {path:"home",element:<ProtectedRoute element={<Home/>}/>}
-      ]},
-  ]
-)
 
 function App() {
+  const {status,error,items}=useSelector(state=>state.sidebardata);
+  const dispatch=useDispatch();
+  
+  useEffect(()=>{
+    if(status=='idle'){
+      dispatch(fetchSidebar());
+    }
+  },[status,dispatch])
+  
+  const router=createBrowserRouter(
+    [
+      {path:"/auth",element:<Auth/>},
+      {
+        path:"/",
+        element:<Layout sidebarList={items}/>,
+        children:[
+          {path:"home",element:<ProtectedRoute element={<Home/>}/>}
+        ]},
+    ]
+  )
+
   return (
     <>
         <RouterProvider router={router}/>
