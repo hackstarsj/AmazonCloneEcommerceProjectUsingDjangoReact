@@ -114,3 +114,16 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 ### Empty Dashboard 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/first.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+### Dynamic Form For Add Product ScreenShot with JSON Key Value Pair Input and Multi Step form
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/2.png" alt="Amazon Clone Project Add Products" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/3.png" alt="Amazon Clone Project Add Products" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/4.png" alt="Amazon Clone Project Add Products" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/5.png" alt="Amazon Clone Project Add Products" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/6.png" alt="Amazon Clone Project Add Products" style="width: 100%;"/>
+
