@@ -10,7 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Provider } from 'react-redux';
 import { fetchSidebar } from './redux/reducer/sidebardata';
 import { useEffect,useState } from 'react';
-
+import DynamicForm from './pages/DynamicForm';
+import 'react-toastify/dist/ReactToastify.css';
+import './style/style.css';
 
 function App() {
   const {status,error,items}=useSelector(state=>state.sidebardata);
@@ -29,7 +31,8 @@ function App() {
         path:"/",
         element:<Layout sidebarList={items}/>,
         children:[
-          {path:"home",element:<ProtectedRoute element={<Home/>}/>}
+          {path:"/",element:<ProtectedRoute element={<Home/>}/>},
+          {path:"/form/:formName",element:<ProtectedRoute element={<DynamicForm/>}/>},
         ]},
     ]
   )
@@ -37,7 +40,7 @@ function App() {
   return (
     <>
         <RouterProvider router={router}/>
-        <ToastContainer position="bottom-right" autoclose={3000} hideProgressBar={false} style={{marginBottom:'30px'}}/>
+        <ToastContainer position="bottom-right" theme='colored' autoclose={3000} hideProgressBar={false} style={{marginBottom:'30px'}}/>
 
     </>
   );

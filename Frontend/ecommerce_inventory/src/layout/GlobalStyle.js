@@ -94,6 +94,15 @@ export const GlobalStyles = () => {
           scrollbar-width: thin;
           scrollbar-color: ${theme.palette.primary.main} ${theme.palette.background.default};
         }
+
+        .fileInput{
+            border:1px solid ${theme.palette.primary.main};
+            padding: 10px;
+        }
+        .fileInput label{
+          margin-right:10px;
+        }
+
         
       `}
     />

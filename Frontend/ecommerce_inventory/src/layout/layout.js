@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { CssBaseline, ThemeProvider, createTheme, AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemText, Collapse, Divider, Card, CardContent, Fab, Box, Hidden, InputBase, Avatar, Menu, MenuItem, ListItemIcon, BottomNavigation, BottomNavigationAction, Link } from '@mui/material';
-import { LightMode, DarkMode, Menu as MenuIcon, ExpandLess, ExpandMore, Search as SearchIcon, AccountCircle, Settings as SettingsIcon, Notifications as NotificationsIcon, Logout, Home, Code as CodeIcon, Public as PublicIcon, Business as BusinessIcon, AlternateEmail as AlternateEmailIcon, AutoAwesomeTwoTone, Circle } from '@mui/icons-material';
+import { LightMode, DarkMode, Menu as MenuIcon, ExpandLess, ExpandMore, Search as SearchIcon, AccountCircle, Settings as SettingsIcon, Notifications as NotificationsIcon, Logout, Home, Code as CodeIcon, Public as PublicIcon, Business as BusinessIcon, AlternateEmail as AlternateEmailIcon, AutoAwesomeTwoTone, Circle, AddCircleOutlineOutlined, DashboardOutlined, ShoppingCartOutlined, StorefrontOutlined, GroupOutlined, InventoryOutlined, CategoryOutlined, Category, ShoppingBasketOutlined, ShoppingBasketRounded, ReceiptOutlined, WarehouseOutlined } from '@mui/icons-material';
 import { ThemeProvider as Emotion10ThemeProvider } from '@emotion/react';
 import './style.scss';
 import { orangeDarkTheme, orangeLightTheme, basicTheme,darkTheme,lightTheme,customTheme,blueLightTheme,blueDarkTheme,greenLightTheme,greenDarkTheme,redLightTheme,redDarkTheme } from './themes';
@@ -124,28 +124,28 @@ const Layout = ({sidebarList,pageTitle}) => {
 
   const getIcon = (icon) => {
     switch (icon) {
-      case 'home':
-        return <Home />;
-      case 'code':
-        return <CodeIcon />;
-      case 'public':
-        return <PublicIcon />;
-      case 'business':
-        return <BusinessIcon />;
-      case 'customers':
-        return <AccountCircle />;
-      case 'settings':
+      case 'Add':
+        return <AddCircleOutlineOutlined />;
+      case 'Dashboard':
+        return <DashboardOutlined />;
+      case 'Store':
+        return <ShoppingCartOutlined />;
+      case 'Retail':
+        return <StorefrontOutlined />;
+      case 'AccountCircle':
+        return <GroupOutlined />;
+      case 'Settings':
         return <SettingsIcon />;
-      case 'logout':
-        return <Logout />;
-      case 'school':
-        return <BusinessIcon />;
-      case 'students':
-        return <AccountCircle />;
-      case 'teachers':
-        return <AccountCircle />;
-      case 'courses':
-        return <AccountCircle />;
+      case 'Inventory':
+        return <InventoryOutlined />;
+      case 'Category':
+        return <Category />;
+      case 'Redeem':
+        return <ShoppingBasketRounded />;
+      case 'Receipt':
+        return <ReceiptOutlined />;
+      case 'Warehouse':
+        return <WarehouseOutlined />;
       case 'exams':
         return <AccountCircle />;
       case 'results':
@@ -194,7 +194,7 @@ const Layout = ({sidebarList,pageTitle}) => {
               {sidebarItem.submenus.map(child => (
                             <ListItem button sx={{ pl: 4 }} key={child.module_name} onClick={()=>handleSidebarMenuClick(child)}>
                                 <ListItemIcon>
-                                <AlternateEmailIcon />
+                                    {getIcon(child.module_icon)}
                                 </ListItemIcon>
                                 <ListItemText primary={child.module_name} />
                             </ListItem>
