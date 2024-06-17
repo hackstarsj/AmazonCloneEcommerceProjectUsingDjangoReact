@@ -127,3 +127,7 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/6.png" alt="Amazon Clone Project Add Products" style="width: 100%;"/>
 
+
+
+## Commits
+# Commit Tree
