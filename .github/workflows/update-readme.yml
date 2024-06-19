@@ -16,19 +16,19 @@ jobs:
       run: |
         curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
         sudo apt-get install -y nodejs
-        npm install @gitgraph/node canvas fs-extra
+        npm install nodegit d3-node canvas jsdom
 
     - name: Generate commit tree
       run: node generate_commit_tree.js
 
     - name: Append commit tree to README
       run: |
-        echo '\n## Commit Tree\n![Commit Tree](commit-tree.png)\n' >> README.md
+        echo '\n## Commit Tree\n![Commit Tree](commit-tree.svg)\n' >> README.md
 
     - name: Commit changes
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
-        git add README.md commit-tree.png
+        git add README.md commit-tree.svg
         git commit -m 'Update commit tree in README'
         git push

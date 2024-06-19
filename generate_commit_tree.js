@@ -1,43 +1,84 @@
-const { execSync } = require('child_process');
-const { writeFile } = require('fs-extra');
-const { Gitgraph } = require('@gitgraph/node');
+const NodeGit = require('nodegit');
+const fs = require('fs');
+const { JSDOM } = require('jsdom');
+const d3 = require('d3');
 const { createCanvas } = require('canvas');
 
-// Function to generate the git graph
-const generateGitGraph = async () => {
-  // Create canvas
+async function generateCommitTree() {
+  const repo = await NodeGit.Repository.open(".");
+  const firstCommitOnMaster = await repo.getMasterCommit();
+
+  // Create a history event emitter.
+  const history = firstCommitOnMaster.history();
+
+  let commits = [];
+  history.on("commit", (commit) => {
+    commits.push({
+      sha: commit.sha().substring(0, 7),
+      message: commit.message(),
+      date: commit.date(),
+      author: commit.author().name(),
+    });
+  });
+
+  await new Promise((resolve, reject) => {
+    history.on("end", resolve);
+    history.on("error", reject);
+    history.start();
+  });
+
+  // Set up D3.js with jsdom
   const width = 800;
   const height = 600;
   const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext('2d');
+  const context = canvas.getContext('2d');
 
-  // Initialize Gitgraph
-  const gitgraph = new Gitgraph(ctx);
+  const dom = new JSDOM('<!DOCTYPE html><html><body><div id="container"></div></body></html>');
+  const body = d3.select(dom.window.document).select("body");
+  const container = body.select("#container");
 
-  // Get commits from git log
-  const log = execSync('git log --pretty=format:"%h %p %s"').toString();
-  const commits = log.split('\n').map(line => {
-    const [hash, parent, ...message] = line.trim().split(' ');
-    return { hash, parent, message: message.join(' ') };
-  });
+  const svg = container.append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(40,0)");
 
-  const branches = new Map();
-  const master = gitgraph.branch('master');
-  branches.set('master', master);
+  const tree = d3.tree()
+    .size([height - 200, width - 160]);
 
-  // Process commits
-  commits.forEach(commit => {
-    const { hash, parent, message } = commit;
-    const parentBranch = branches.get(parent) || master;
-    const newBranch = parentBranch.branch(hash);
-    newBranch.commit(message);
-    branches.set(hash, newBranch);
-  });
+  const root = d3.hierarchy({ children: commits });
 
-  // Save canvas to file
-  const buffer = canvas.toBuffer('image/png');
-  await writeFile('commit-tree.png', buffer);
+  tree(root);
+
+  const link = svg.selectAll(".link")
+    .data(root.descendants().slice(1))
+    .enter().append("path")
+    .attr("class", "link")
+    .attr("d", (d) => {
+      return "M" + d.y + "," + d.x
+        + "C" + (d.y + d.parent.y) / 2 + "," + d.x
+        + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
+        + " " + d.parent.y + "," + d.parent.x;
+    });
+
+  const node = svg.selectAll(".node")
+    .data(root.descendants())
+    .enter().append("g")
+    .attr("class", (d) => "node" + (d.children ? " node--internal" : " node--leaf"))
+    .attr("transform", (d) => "translate(" + d.y + "," + d.x + ")");
+
+  node.append("circle")
+    .attr("r", 10);
+
+  node.append("text")
+    .attr("dy", ".35em")
+    .attr("x", (d) => d.children ? -13 : 13)
+    .style("text-anchor", (d) => d.children ? "end" : "start")
+    .text((d) => d.data.message);
+
+  const svgString = body.select("svg").node().outerHTML;
+  fs.writeFileSync('commit-tree.svg', svgString);
   console.log('The file has been saved!');
-};
+}
 
-generateGitGraph().catch(console.error);
+generateCommitTree().catch(console.error);
