@@ -1,0 +1,36 @@
+name: Update README
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Generate commit tree
+      run: node generate_commit_tree.js
+
+    - name: Append commit tree to README
+      run: |
+        echo '\n## Commit Tree\n![Commit Tree](commit-tree.png)\n' >> README.md
+
+    - name: Commit changes
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'github-actions@github.com'
+        git add README.md commit-tree.png
+        git commit -m 'Update commit tree in README'
+        git push
