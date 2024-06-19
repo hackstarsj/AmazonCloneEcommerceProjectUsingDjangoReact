@@ -1,3 +1,4 @@
+const { execSync } = require('child_process');
 const { writeFile } = require('fs-extra');
 const { Gitgraph } = require('@gitgraph/js');
 const { createCanvas } = require('canvas');
@@ -13,20 +14,25 @@ const generateGitGraph = async () => {
   // Initialize Gitgraph
   const gitgraph = new Gitgraph(ctx);
 
-  // Create the main branch
-  const master = gitgraph.branch("main");
-  master.commit("Initial commit");
+  // Get commits from git log
+  const log = execSync('git log --pretty=format:"%h %p %s" --graph --all').toString();
+  const commits = log.split('\n').map(line => {
+    const [hash, parent, ...message] = line.trim().split(' ');
+    return { hash, parent, message: message.join(' ') };
+  });
 
-  // Add more commits
-  master.commit("Second commit");
-  master.commit("Third commit");
+  const branches = new Map();
+  const main = gitgraph.branch('master');
+  branches.set('master', main);
 
-  // Create feature branch
-  const feature = master.branch("feature-branch");
-  feature.commit("Feature commit");
-
-  // Merge feature branch back to main
-  feature.merge(master, "Merge feature branch");
+  // Process commits
+  commits.forEach(commit => {
+    const { hash, parent, message } = commit;
+    const parentBranch = branches.get(parent) || main;
+    const newBranch = parentBranch.branch(hash);
+    newBranch.commit(message);
+    branches.set(hash, newBranch);
+  });
 
   // Save canvas to file
   const buffer = canvas.toBuffer('image/png');
@@ -34,4 +40,4 @@ const generateGitGraph = async () => {
   console.log('The file has been saved!');
 };
 
-generateGitGraph();
+generateGitGraph().catch(console.error);

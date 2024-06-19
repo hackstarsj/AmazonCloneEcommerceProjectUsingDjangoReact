@@ -12,13 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install dependencies
-      run: npm install
+    - name: Set up Node.js environment and dependencies
+      run: |
+        curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        npm install @gitgraph/js canvas fs-extra
 
     - name: Generate commit tree
       run: node generate_commit_tree.js
