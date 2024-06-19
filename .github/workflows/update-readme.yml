@@ -16,7 +16,7 @@ jobs:
       run: |
         curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
         sudo apt-get install -y nodejs
-        npm install @gitgraph/js canvas fs-extra
+        npm install @gitgraph/node canvas fs-extra
 
     - name: Generate commit tree
       run: node generate_commit_tree.js
