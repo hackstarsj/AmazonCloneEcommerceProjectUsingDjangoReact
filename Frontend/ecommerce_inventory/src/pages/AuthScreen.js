@@ -44,7 +44,7 @@ function LoginForm() {
       if(response?.data?.access){
         localStorage.setItem("token",response.data.access);
             toast.success("Login Successfully");
-            navigate("/home");
+            navigate("/");
       }
       else{
             toast.error("Invalid Credentials");

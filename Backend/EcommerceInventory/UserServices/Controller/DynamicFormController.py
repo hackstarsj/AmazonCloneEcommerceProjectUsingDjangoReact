@@ -46,8 +46,6 @@ class DynamicFormController(APIView):
         fields=request.data.copy()
 
         #Adding the Domain User ID and Added By User ID in the Post Data
-        fields['domain_user_id']=request.user.domain_user_id
-        fields['added_by_user_id']=Users.objects.get(id=request.user.id)
 
         #Filtering the Post Data Fields by Model Fields and Eliminating the Extra Fields
         fieldsdata={key:value for key,value in fields.items() if key in model_fields}
@@ -66,8 +64,13 @@ class DynamicFormController(APIView):
                     fieldsdata[field.name]=related_model.objects.get(id=fieldsdata[field.name])
                 except related_model.DoesNotExist:
                     return renderResponse(data=f'{field.name} Relation Not Exist found',message=f'{field.name} Relation Not Exist found',status=404)
+            elif field.is_relation and field.name in fieldsdata:
+                fieldsdata.pop(field.name)
 
         #Creating the Model Instance and Saving the Data in the Database
+        fieldsdata['domain_user_id']=request.user.domain_user_id
+        fieldsdata['added_by_user_id']=Users.objects.get(id=request.user.id)
+
         model_instace=model_class.objects.create(**fieldsdata)
 
         #Serializing Data

@@ -2,7 +2,7 @@ import {useFormContext} from 'react-hook-form';
 import { Box,FormControl,InputLabel,Select,MenuItem, FormControlLabel, Switch, TextField } from "@mui/material";
 
 const StepTextAreaComponents = ({formConfig,fieldType}) => {
-    const {register} = useFormContext();
+    const {register,formState:{errors}} = useFormContext();
     const textAreaFields=formConfig.data.textarea;
     return (
         <Box>
@@ -11,6 +11,7 @@ const StepTextAreaComponents = ({formConfig,fieldType}) => {
                 fullWidth
                 margin="normal"
                 key={field.name}
+                error={!!errors[field.name]}
                 label={field.label}
                 {...register(field.name,{required:field.required})}
                 defaultValue={field.default}

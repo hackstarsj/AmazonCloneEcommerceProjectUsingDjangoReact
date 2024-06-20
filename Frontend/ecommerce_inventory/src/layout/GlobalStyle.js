@@ -102,7 +102,12 @@ export const GlobalStyles = () => {
         .fileInput label{
           margin-right:10px;
         }
-
+        .active-sidebar{
+          background-color:${theme.palette.primary.dark}!important;
+          color:${theme.palette.background.light}!important;
+          border-radius:12px!important;
+          box-shadow:0 0 10px 0 ${theme.palette.primary.main}!important;
+        }
         
       `}
     />

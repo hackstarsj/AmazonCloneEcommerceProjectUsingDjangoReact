@@ -16,6 +16,7 @@ import StepSwitchComponents from '../components/StepSwitchComponents';
 import StepTextAreaComponents from '../components/StepTextAreaComponents';
 import StepJsonComponents from '../components/StepJsonComponents';
 import StepFileComponents from '../components/StepFileComponents';
+import { toast } from 'react-toastify';
 
 const DynamicForm=()=>{
     const {formName}=useParams();
@@ -47,11 +48,44 @@ const DynamicForm=()=>{
         setCurrentStep(index);
     }
 
-    const onSubmit=(data)=>{
-        console.log(data);
+    const onSubmit=async(data)=>{
+        try{
+            const response=await callApi({url:`http://localhost:8000/api/getForm/${formName}/`,method:'post',body:data});
+            toast.success(response.data.message);
+            setCurrentStep(0);
+            methods.reset();
+        }
+        catch(err){
+            console.log(err);
+        }
+
     }
 
-    const StepComponent=steps[currentStep].component;
+    const nextStep=()=>{
+        const currentStepFields=getCurrentStepFields();
+        const errors=validateCurrentStepFields(currentStepFields);
+        if(errors.length>0){
+            errors.forEach(error=>{
+                methods.setError(error.name,{type:'manual',message:`${error.label} is Required`})
+            })
+        }
+        else{
+            const currentStepFields=getCurrentStepFields();
+            currentStepFields.forEach(field=>{
+                methods.clearErrors(field.name);
+            })
+            setCurrentStep((prev)=>(prev+1));
+        }
+    }
+
+    const getCurrentStepFields=()=>{
+        const currentStepType=steps[currentStep]?.fieldType;
+        return formConfig.data[currentStepType] || [];
+    }
+    const validateCurrentStepFields=(fields)=>{
+        return fields.filter(field=>field.required && !methods.getValues()[field.name])
+    }
+
 
     return (
         <Container>
@@ -69,13 +103,23 @@ const DynamicForm=()=>{
             {/* Section for Form */}
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    {formConfig ? <StepComponent formConfig={formConfig} fieldType={steps[currentStep].fieldType}/> : <LinearProgress/>}
+                    {formConfig ?
+                    <>
+                        {steps.map((step,index)=>(
+                            <Box component={"div"} sx={{display:index===currentStep?"block":"none"}}>
+                                {step.component && <step.component formConfig={formConfig} fieldType={step.fieldType}/>}
+                            </Box>
+                        ))}
+                    </>  : <LinearProgress/>}
             <Box mt={2} display="flex" justifyContent="space-between">
-            {currentStep>0 && (<Button variant="contained" color="primary" onClick={()=>goToStep(currentStep-1)}><ArrowBackIosIcon sx={{fontSize:'18px',marginRight:'5px'}}/> Back</Button>)}
-            {currentStep<steps.length-1?<Button variant="contained" color="primary" onClick={()=>goToStep(currentStep+1)}> Next <ArrowForwardIosIcon sx={{fontSize:'18px',marginLeft:'5px'}}/></Button>:<Button variant="contained" color="primary" type="submit"><SaveIcon sx={{fontSize:'18px',marginRight:'5px'}}/> Submit</Button>}
+            {currentStep>0 && (<Button type='button' variant="contained" color="primary" onClick={()=>goToStep(currentStep-1)}><ArrowBackIosIcon sx={{fontSize:'18px',marginRight:'5px'}}/> Back</Button>)}
+            {currentStep<steps.length-1?<Button type='button' variant="contained" color="primary" onClick={()=>nextStep()}> Next <ArrowForwardIosIcon sx={{fontSize:'18px',marginLeft:'5px'}}/></Button>:<Button variant="contained" color="primary" type="submit"><SaveIcon sx={{fontSize:'18px',marginRight:'5px'}}/> Submit</Button>}
             </Box>
             </form>
             </FormProvider>
+            {
+               loading && <LinearProgress style={{width:'100%',marginTop:'10px',marginBottom:'10px'}}/>
+            }
 
         </Container>
     )

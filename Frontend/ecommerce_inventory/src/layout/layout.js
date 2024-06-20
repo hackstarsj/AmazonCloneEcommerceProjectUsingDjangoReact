@@ -8,7 +8,7 @@ import logo from '../assets/logo.svg';
 import { GlobalStyles } from './GlobalStyle';
 import TextField from '@mui/material/TextField';
 import { Outlet,useNavigate } from 'react-router-dom'; // Import Outlet
-import { expandItem } from '../redux/reducer/sidebardata';
+import { expandItem,activateItem } from '../redux/reducer/sidebardata';
 import {useDispatch} from 'react-redux';
 
 const Layout = ({sidebarList,pageTitle}) => {
@@ -117,6 +117,7 @@ const Layout = ({sidebarList,pageTitle}) => {
       dispatch(expandItem({id:sidebarItem.id}));
     }
     else{
+      dispatch(activateItem({item:sidebarItem}))
       navigate(sidebarItem.module_url);
     }
 
@@ -177,22 +178,22 @@ const Layout = ({sidebarList,pageTitle}) => {
       <List sx={{ '& .MuiListItem-root': { transition: 'background-color 0.3s' } }}>
         {sidebarItems.map((sidebarItem) => (
             <>
-            <ListItem key={sidebarItem.id} onClick={()=>handleSidebarMenuClick(sidebarItem)} sx={{ '&.Mui-selected': { backgroundColor: theme.palette.action.selected }, '&:hover': { backgroundColor: theme.palette.primary.light,borderRadius:'10px' } }}>
+            <ListItem key={sidebarItem.id} onClick={()=>handleSidebarMenuClick(sidebarItem)} sx={{ '&.Mui-selected': { backgroundColor: theme.palette.action.selected }, '&:hover': { backgroundColor: theme.palette.primary.light,borderRadius:'10px' } }} className={(sidebarItem?.active && sidebarItem.submenus.length===0)?"active-sidebar":""}>
                 <ListItemIcon>
                     {getIcon(sidebarItem.module_icon)}
                 </ListItemIcon>
                 <ListItemText primary={sidebarItem.module_name} />
                 {"submenus" in sidebarItem && sidebarItem.submenus.length>0?
                     <>
-                        {sidebarItem?.expanded ? <ExpandLess /> : <ExpandMore />}
+                        {(sidebarItem?.expanded || sidebarItem?.active) ? <ExpandLess /> : <ExpandMore />}
                     </>
                 :""}
             </ListItem>
             {"submenus" in sidebarItem && sidebarItem.submenus.length>0?
-                <Collapse in={sidebarItem?.expanded} timeout="auto" unmountOnExit>
+                <Collapse in={sidebarItem?.expanded || sidebarItem?.active} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
               {sidebarItem.submenus.map(child => (
-                            <ListItem button sx={{ pl: 4 }} key={child.module_name} onClick={()=>handleSidebarMenuClick(child)}>
+                            <ListItem button sx={{ pl: 4 }} key={child.module_name} onClick={()=>handleSidebarMenuClick(child)} className={child?.active?"active-sidebar":""}>
                                 <ListItemIcon>
                                     {getIcon(child.module_icon)}
                                 </ListItemIcon>
