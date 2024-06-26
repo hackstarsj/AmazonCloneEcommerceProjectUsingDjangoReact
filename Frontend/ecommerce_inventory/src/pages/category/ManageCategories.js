@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import useApi from "../../hooks/APIHandler";
 import { useNavigate } from "react-router-dom";
-import { Box, IconButton, LinearProgress, TextField, Typography } from "@mui/material";
+import { Box, Breadcrumbs, IconButton, LinearProgress, TextField, Typography } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { isValidUrl } from "../../utils/Helper";
 import Add from '@mui/icons-material/Add';
@@ -126,6 +126,10 @@ const ManageCategories = () => {
 
     return (
         <Box component={"div"} sx={{width:'100%'}}>
+            <Breadcrumbs>
+                <Typography variant="body2" onClick={()=>navigate('/')}>Home</Typography>
+                <Typography variant="body2" onClick={()=>navigate('/manage/category')}>Manage Category</Typography>
+            </Breadcrumbs>
             <TextField label="Search" variant="outlined" fullWidth onChange={(e)=>setSearchQuery(e.target.value)} margin="normal"/>
             <DataGrid
                 rows={data}
