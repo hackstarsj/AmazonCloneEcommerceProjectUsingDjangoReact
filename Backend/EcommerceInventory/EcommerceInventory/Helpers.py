@@ -2,6 +2,7 @@ from django.db.models import ForeignKey
 from rest_framework.response import Response
 from rest_framework.views import exception_handler 
 from rest_framework.exceptions import AuthenticationFailed,NotAuthenticated,PermissionDenied
+from rest_framework.pagination import PageNumberPagination
 
 def getDynamicFormModels():
     return {
@@ -102,3 +103,6 @@ def custom_exception_handler(exc, context):
     return response
         
     
+class CustomPageNumberPagination(PageNumberPagination):
+    page_size_query_param='pageSize'
+    max_page_size=100

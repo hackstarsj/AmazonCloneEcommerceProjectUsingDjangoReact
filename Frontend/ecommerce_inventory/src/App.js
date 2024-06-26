@@ -13,6 +13,7 @@ import { useEffect,useState } from 'react';
 import DynamicForm from './pages/DynamicForm';
 import 'react-toastify/dist/ReactToastify.css';
 import './style/style.css';
+import ManageCategories from './pages/category/ManageCategories';
 
 function App() {
   const {status,error,items}=useSelector(state=>state.sidebardata);
@@ -33,6 +34,7 @@ function App() {
         children:[
           {path:"/",element:<ProtectedRoute element={<Home/>}/>},
           {path:"/form/:formName",element:<ProtectedRoute element={<DynamicForm/>}/>},
+          {path:"/manage/category",element:<ProtectedRoute element={<ManageCategories/>}/>}
         ]},
     ]
   )
