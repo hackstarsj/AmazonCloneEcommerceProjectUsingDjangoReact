@@ -131,6 +131,24 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 ## Sidebar Active Indicator
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/7.png" alt="Amazon Clone Project Sidebar Active" style="width: 100%;"/>
 
+## Manage Category Page With Search,Sorting,Pagination,Item Per page,DataGrid,Expandable Child Item and API Integrated
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/8.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
+
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/9.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
+
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/10.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/11.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/12.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/13.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
+
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/14.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
 
 
 ## Commits
