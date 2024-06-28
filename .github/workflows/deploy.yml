@@ -38,6 +38,12 @@ jobs:
       run: |
         scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa docker-compose.yml ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/docker-compose.yml
 
+    - name: Copy Dockerfile to EC2
+      run: |
+        scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa Dockerfile ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/Dockerfile
+
+
+
     - name: Deploy to EC2
       run: |
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
