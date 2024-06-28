@@ -1,23 +1,24 @@
-# Stage 1: Build React app
-FROM node:14 as build
+FROM node:14 as build-stage
 
+# Set working directory
 WORKDIR /app
-COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/package-lock.json /app/
+
+# Copy frontend files
+COPY ../Frontend/ecommerce_inventory/package.json ../Frontend/ecommerce_inventory/package-lock.json /app/
+
+# Install dependencies
 RUN npm install
-COPY ./Frontend/ecommerce_inventory /app
+
+# Copy frontend source code
+COPY ../Frontend/ecommerce_inventory /app/
+
+# Build frontend (adjust this based on your React build process)
 RUN npm run build
 
-# Stage 2: Set up Django
+# Production stage
 FROM python:3.9
 
-ENV PYTHONUNBUFFERED 1
-WORKDIR /app
+# Copy built frontend to Django static files directory
+COPY --from=build-stage /app/build /path/to/django/static/directory
 
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the React build files to Django static directory
-COPY --from=build /app/build /app/static/
-COPY . /app/
-
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "EcommerceInventory.wsgi:application"]
+# Continue with your Django setup...
