@@ -31,8 +31,12 @@ DEBUG = os.getenv('DEBUG','True') == 'True'
 
 ALLOWED_HOSTS = []
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory for collectstatic
 
-# Application definition
+# Additional locations of static files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Directory for static files used in development
+]# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -76,7 +80,7 @@ ROOT_URLCONF = 'EcommerceInventory.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['EcommerceInventory/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
