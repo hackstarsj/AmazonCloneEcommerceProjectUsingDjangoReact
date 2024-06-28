@@ -1,5 +1,5 @@
 # Stage 1: Build frontend
-FROM node:14 as build-stage
+FROM node:18 as build-stage
 
 # Set working directory for frontend
 WORKDIR /app
@@ -23,7 +23,7 @@ RUN ls -l /app
 RUN npm run build
 
 # Stage 2: Build Django backend
-FROM python:3.9
+FROM python:3.11.0
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
