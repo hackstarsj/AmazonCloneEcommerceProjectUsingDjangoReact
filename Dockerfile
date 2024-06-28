@@ -49,6 +49,7 @@ RUN ls -l /code/static
 
 # Copy Django project files
 COPY ./Backend/EcommerceInventory /code/
+COPY ./Frontend/ /code/
 
 # List contents (optional, for verification)
 RUN ls -l /code
