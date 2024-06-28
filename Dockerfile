@@ -15,6 +15,7 @@ RUN npm install
 
 # Copy frontend source code
 COPY ./Frontend/ecommerce_inventory /app/
+COPY ./Frontend/ /app/Frontend/
 
 # List contents (optional, for verification)
 RUN ls -l /app
