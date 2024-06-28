@@ -4,15 +4,10 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:80
-    volumes:
-      - ./Backend/EcommerceInventory:/code
-      - ./Frontend/ecommerce_inventory/build:/code/static  # Assuming React build output is in /code/static
+      dockerfile: Dockerfile  # Adjust the path to your Dockerfile if necessary
+    command: gunicorn Backend.EcommerceInventory.EcommerceInventory.wsgi:application --bind 0.0.0.0:80
     ports:
       - "80:80"
-    environment:
-      - DEBUG=0  # Set DEBUG to 0 for production-like environments
     depends_on:
       - db
 

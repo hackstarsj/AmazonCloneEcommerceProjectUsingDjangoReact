@@ -11,7 +11,7 @@ COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/
 RUN npm install
 
 # Copy frontend source code
-COPY ./Frontend/ecommerce_inventory .
+COPY ./Frontend/ecommerce_inventory ./
 
 # Build frontend (adjust this based on your React build process)
 RUN npm run build
@@ -27,16 +27,14 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /code
 
 # Copy backend requirements file
-COPY ./Backend/EcommerceInventory/requirements.txt .
-
-# Install backend dependencies
+COPY ./Backend/EcommerceInventory/requirements.txt /code/
 RUN pip install -r requirements.txt
 
 # Copy built frontend to Django static files directory
-COPY --from=build-stage /app/frontend/build ./static
+COPY --from=build-stage /app/frontend/build /code/static/
 
 # Copy Django project files
-COPY ./Backend/EcommerceInventory .
+COPY ./Backend/EcommerceInventory /code/
 
 # Collect static files
 RUN python manage.py collectstatic --no-input
