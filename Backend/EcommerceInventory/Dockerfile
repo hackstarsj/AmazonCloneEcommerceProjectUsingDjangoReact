@@ -27,7 +27,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /code
 
 # Install dependencies
-COPY ./EcommerceInventory/requirements.txt /code/
+COPY ../../Backend/EcommerceInventory/requirements.txt /code/
 RUN pip install -r requirements.txt
 
 # Copy built frontend to Django static files directory
