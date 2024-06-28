@@ -35,7 +35,7 @@ WORKDIR /code
 RUN ls -l /app
 
 # Install dependencies
-COPY ./Backend/EcommerceInventory/requirements.txt /code/
+COPY ./EcommerceInventory/requirements.txt /code/
 RUN pip install -r requirements.txt
 RUN ls -l /app
 
