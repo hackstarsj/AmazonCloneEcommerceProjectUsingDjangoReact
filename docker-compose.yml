@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./Backend/EcommerceInventory
+    command: gunicorn EcommerceInventory.wsgi:application --bind 0.0.0.0:80
+    volumes:
+      - ./Backend/EcommerceInventory:/app
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_DATABASE: your_db_name
+      MYSQL_USER: your_db_user
+      MYSQL_PASSWORD: your_db_password
+
+volumes:
+  db_data:

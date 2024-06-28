@@ -1,0 +1,35 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker images
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest ./Backend/EcommerceInventory
+        docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no -i "${{ secrets.AWS_EC2_KEY }}" ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
+          docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+          docker-compose -f /path/to/your/docker-compose.yml up -d
+        EOF
