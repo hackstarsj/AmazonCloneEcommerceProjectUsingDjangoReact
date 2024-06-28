@@ -44,4 +44,4 @@ RUN python manage.py collectstatic --no-input
 EXPOSE 80
 
 # Command to run Django server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
+CMD ["gunicorn", "--chdir", "Backend/EcommerceInventory", "EcommerceInventory.wsgi:application", "--bind", "0.0.0.0:80"]
