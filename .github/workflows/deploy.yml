@@ -24,7 +24,7 @@ jobs:
 
     - name: Build and push Docker images
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest ./Backend/EcommerceInventory/
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
 
     - name: Set up SSH
