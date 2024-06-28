@@ -11,7 +11,7 @@ COPY ../../Frontend/ecommerce_inventory/package.json ../../Frontend/ecommerce_in
 RUN npm install
 
 # Copy frontend source code
-COPY ./Frontend/ecommerce_inventory /app/
+COPY ../../Frontend/ecommerce_inventory /app/
 
 # Build frontend (adjust this based on your React build process)
 RUN npm run build
