@@ -1,7 +1,6 @@
 import {useParams} from 'react-router-dom';
 import {useEffect,useState} from 'react';
 import useApi from '../hooks/APIHandler';
-import StepTextComponents from '../components/StepTextComponents';
 import { Container, Divider, LinearProgress, Typography } from '@mui/material';
 import { Stepper, Step, StepLabel } from '@mui/material';
 import { ArrowBack, ArrowOutward, CurrencyExchange } from '@mui/icons-material';
@@ -9,39 +8,30 @@ import { Button,Box } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SaveIcon from '@mui/icons-material/Save';
-import { FormProvider } from 'react-hook-form';
+import { FormProvider, get } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
-import StepSelectComponents from '../components/StepSelectComponents';
-import StepSwitchComponents from '../components/StepSwitchComponents';
-import StepTextAreaComponents from '../components/StepTextAreaComponents';
-import StepJsonComponents from '../components/StepJsonComponents';
-import StepFileComponents from '../components/StepFileComponents';
 import { toast } from 'react-toastify';
+import { getFormTypes } from '../utils/Helper';
 
 const DynamicForm=()=>{
+    const stepItems=getFormTypes();
     const {formName}=useParams();
     const {error,loading,callApi}=useApi();
     const [formConfig,setFormConfig]=useState(null);
     const [currentStep,setCurrentStep]=useState(0);
     const methods=useForm();
-    const [steps,setSteps]=useState([
-        {component:StepSelectComponents,label:"Basic Details",fieldType:'select'},
-        {component:StepSwitchComponents,label:"Checklist",fieldType:'checkbox'},
-        {component:StepTextComponents,label:"General Information",fieldType:'text'},
-        {component:StepTextAreaComponents,label:"Detailed Information",fieldType:'textarea'},
-        {component:StepJsonComponents,label:"Additional Details",fieldType:'json'},
-        {component:StepFileComponents,label:"Documents & Files",fieldType:'file'},
-    ])
+    const [steps,setSteps]=useState(stepItems)
 
     useEffect(()=>{
         fetchForm();
     },[formName])
 
     const fetchForm=async()=>{
-        const response=await callApi({url:`http://localhost:8000/api/getForm/${formName}/`});
-        let stepFilter=steps.filter(step=>response.data.data[step.fieldType] && response.data.data[step.fieldType].length>0);
+        const response=await callApi({url:`getForm/${formName}/`});
+        let stepFilter=stepItems.filter(step=>response.data.data[step.fieldType] && response.data.data[step.fieldType].length>0);
         setSteps(stepFilter);
         setFormConfig(response.data);
+        setCurrentStep(0);
     }
 
     const goToStep=(index)=>{
@@ -50,7 +40,7 @@ const DynamicForm=()=>{
 
     const onSubmit=async(data)=>{
         try{
-            const response=await callApi({url:`http://localhost:8000/api/getForm/${formName}/`,method:'post',body:data});
+            const response=await callApi({url:`getForm/${formName}/`,method:'post',body:data});
             toast.success(response.data.message);
             setCurrentStep(0);
             methods.reset();

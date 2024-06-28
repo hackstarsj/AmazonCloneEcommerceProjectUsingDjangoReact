@@ -1,8 +1,9 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
+import config from '../../utils/config';
 
 export const fetchSidebar=createAsyncThunk('data/fetchSidebar',async()=>{
-    const response=await axios.get('http://localhost:8000/api/getMenus/');
+    const response=await axios.get(`${config.API_URL}getMenus/`);
     const sidebarData=response.data.data;
     const setActiveAndExpanded=(item)=>{
         if(item.module_url && window.location.pathname===item.module_url){
@@ -55,6 +56,20 @@ const sidebarSlice=createSlice({
                     item.expanded=true;
                 }
             });
+        },
+        triggerPageChange(state,action){
+            state.items.forEach(item=>{
+                item.active=false;
+                item.expanded=false;
+                item.submenus.forEach(submenu=>{
+                    submenu.active=false;
+                    if(submenu.module_url && window.location.pathname===submenu.module_url){
+                        submenu.active=true;
+                        item.active=true;
+                        item.expanded=true;
+                    }
+                });
+            });
         }
     },
     extraReducers:(builder)=>{
@@ -72,5 +87,5 @@ const sidebarSlice=createSlice({
     }
 });
 
-export const {expandItem,activateItem}=sidebarSlice.actions;
+export const {expandItem,activateItem,triggerPageChange}=sidebarSlice.actions;
 export default sidebarSlice.reducer;

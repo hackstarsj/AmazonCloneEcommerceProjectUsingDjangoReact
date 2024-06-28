@@ -39,7 +39,7 @@ function LoginForm() {
     const {callApi,error,loading}=useApi();
    const doLogin = async(e) => {
       e.preventDefault();
-      let response=await callApi({url:"http://localhost:8000/api/auth/login/",method:"POST",body:{username:e.target.username.value,password:e.target.password.value}});
+      let response=await callApi({url:"auth/login/",method:"POST",body:{username:e.target.username.value,password:e.target.password.value}});
       console.log(response);
       if(response?.data?.access){
         localStorage.setItem("token",response.data.access);
@@ -87,7 +87,7 @@ function SignUpForm() {
     const {callApi,error,loading}=useApi();
     const doSignup = async(e) => {
         e.preventDefault();
-        let response=await callApi({url:"http://localhost:8000/api/auth/signup/",method:"POST",body:{username:e.target.username.value,password:e.target.password.value,email:e.target.email.value,profile_pic:"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"}});
+        let response=await callApi({url:"auth/signup/",method:"POST",body:{username:e.target.username.value,password:e.target.password.value,email:e.target.email.value,profile_pic:"https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"}});
         if(response?.data?.access){
             localStorage.setItem("token",response.data.access);
             toast.success("Signup Successfully");

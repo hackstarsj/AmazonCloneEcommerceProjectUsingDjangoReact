@@ -7,8 +7,8 @@ import { orangeDarkTheme, orangeLightTheme, basicTheme,darkTheme,lightTheme,cust
 import logo from '../assets/logo.svg';
 import { GlobalStyles } from './GlobalStyle';
 import TextField from '@mui/material/TextField';
-import { Outlet,useNavigate } from 'react-router-dom'; // Import Outlet
-import { expandItem,activateItem } from '../redux/reducer/sidebardata';
+import { Outlet,useLocation,useNavigate } from 'react-router-dom'; // Import Outlet
+import { expandItem,activateItem,triggerPageChange } from '../redux/reducer/sidebardata';
 import {useDispatch} from 'react-redux';
 
 const Layout = ({sidebarList,pageTitle}) => {
@@ -21,7 +21,12 @@ const Layout = ({sidebarList,pageTitle}) => {
   const [sidebarItems, setSidebarItems] = useState(sidebarList);
   const navigate=useNavigate();
   const dispatch=useDispatch();
+  const location=useLocation();
   console.log(sidebarItems);
+
+  useEffect(()=>{
+    dispatch(triggerPageChange(location))
+  },[location])
 
   useEffect(() => {
     setSidebarItems(sidebarList);

@@ -108,6 +108,9 @@ export const GlobalStyles = () => {
           border-radius:12px!important;
           box-shadow:0 0 10px 0 ${theme.palette.primary.main}!important;
         }
+        .active-sidebar svg{
+          color:${theme.palette.background.light}!important;
+        }
         
       `}
     />

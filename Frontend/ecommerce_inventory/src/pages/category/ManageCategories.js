@@ -40,7 +40,7 @@ const ManageCategories = () => {
         if(ordering.length>0){
             order=ordering[0].sort==='asc'?ordering[0].field:'-'+ordering[0].field
         }
-        const result=await callApi({url:'http://localhost:8000/api/products/categories/',method:'GET',params:{
+        const result=await callApi({url:'products/categories/',method:'GET',params:{
             page:paginationModel.page+1,
             pageSize:paginationModel.pageSize,
             search:debounceSearch,

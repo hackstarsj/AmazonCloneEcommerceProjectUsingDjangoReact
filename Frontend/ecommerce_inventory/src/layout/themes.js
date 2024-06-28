@@ -243,6 +243,7 @@ export const redLightTheme = createTheme({
     background: {
       paper: 'rgba(255, 228, 225, 1)',
       default: 'rgba(253, 236, 234, 1)',
+      light:'rgba(255, 255, 255, 1)',
     },
     error: {
       main: '#f44336', // Default MUI error color
@@ -390,6 +391,7 @@ export const greenLightTheme = createTheme({
     background: {
       paper: 'rgba(240, 255, 240, 1)',
       default: 'rgba(232, 248, 232, 1)',
+      light:'rgba(255, 255, 255, 1)',
     },
     error: {
       main: '#f44336', // Default MUI error color
@@ -539,6 +541,7 @@ export const blueLightTheme = createTheme({
     background: {
       paper: 'rgba(240, 248, 255, 1)',
       default: 'rgba(232, 242, 253, 1)',
+      light:'rgba(255, 255, 255, 1)'
     },
     error: {
       main: '#f44336', // Default MUI error color
