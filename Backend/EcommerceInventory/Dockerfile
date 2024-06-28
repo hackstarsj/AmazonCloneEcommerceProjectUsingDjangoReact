@@ -27,14 +27,14 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /code
 
 # Install dependencies
-COPY ../../Backend/EcommerceInventory/requirements.txt /code/
+COPY ./EcommerceInventory/requirements.txt /code/
 RUN pip install -r requirements.txt
 
 # Copy built frontend to Django static files directory
 COPY --from=build-stage /app/build /code/static/
 
 # Copy Django project files
-COPY ../../Backend/EcommerceInventory /code/
+COPY ./EcommerceInventory /code/
 
 # Collect static files
 RUN python manage.py collectstatic --no-input
