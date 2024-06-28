@@ -2,21 +2,21 @@
 FROM node:18 as build-stage
 
 # Set working directory for frontend
-WORKDIR /app/frontend
+# WORKDIR /app/frontend
 
-# Copy frontend package files
-COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/package-lock.json ./
+# # Copy frontend package files
+# COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/package-lock.json ./
 
-# Install frontend dependencies
-RUN npm install
+# # Install frontend dependencies
+# RUN npm install
 
-# Copy frontend source code
-COPY ./Frontend/ecommerce_inventory ./
+# # Copy frontend source code
+# COPY ./Frontend/ecommerce_inventory ./
 
-# Build frontend (adjust this based on your React build process)
-RUN npm run build
+# # Build frontend (adjust this based on your React build process)
+# RUN npm run build
 
-# Stage 2: Build Django backend
+# # Stage 2: Build Django backend
 FROM python:3.11.0
 
 # Set environment variables
@@ -31,7 +31,7 @@ COPY ./Backend/EcommerceInventory/requirements.txt /code/
 RUN pip install -r requirements.txt
 
 # Copy built frontend to Django static files directory
-COPY --from=build-stage /app/frontend/build /code/static/
+# COPY --from=build-stage /app/frontend/build /code/static/
 
 # Copy Django project files
 COPY ./Backend/EcommerceInventory /code/
