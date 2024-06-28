@@ -34,9 +34,13 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
+    - name: Copy docker-compose.yml to EC2
+      run: |
+        scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa docker-compose.yml ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/docker-compose.yml
+
     - name: Deploy to EC2
       run: |
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
           docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
-          docker-compose -f /home/user/projects/AmazonCloneEcommerceProjectUsingDjangoReact/docker-compose.yml up -d
+          docker-compose -f /home/ubuntu/docker-compose.yml up -d
         EOF
