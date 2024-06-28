@@ -4,6 +4,7 @@ FROM node:18 as build-stage
 # Set working directory for frontend
 WORKDIR /app/frontend
 
+
 # Copy frontend package files
 COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/package-lock.json ./
 
