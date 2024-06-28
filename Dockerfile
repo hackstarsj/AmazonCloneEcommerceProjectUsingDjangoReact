@@ -43,7 +43,7 @@ RUN ls -l /code
 RUN pip install -r requirements.txt
 
 # Copy built frontend to Django static files directory
-COPY --from=build-stage /app/build /code/static/
+COPY --from=build-stage /code/build /code/static/
 
 # List contents (optional, for verification)
 RUN ls -l /code/static
