@@ -27,9 +27,16 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
 
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
+
     - name: Deploy to EC2
       run: |
-        ssh -o StrictHostKeyChecking=no -i "${{ secrets.AWS_EC2_KEY }}" ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
           docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
           docker-compose -f /home/user/projects/AmazonCloneEcommerceProjectUsingDjangoReact/docker-compose.yml up -d
         EOF
