@@ -2,23 +2,23 @@
 FROM node:18 as build-stage
 
 # Set working directory for frontend
-WORKDIR /app
+WORKDIR /code
 
 # Copy frontend package files
-COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/package-lock.json /app/
+COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/package-lock.json /code/
 
 # List contents (optional, for verification)
-RUN ls -l /app
+RUN ls -l /code
 
 # Install frontend dependencies
 RUN npm install
 
 # Copy frontend source code
-COPY ./Frontend/ecommerce_inventory /app/
-COPY ./Frontend/ /app/Frontend/
+COPY ./Frontend/ecommerce_inventory /code/
+COPY ./Frontend/ /code/Frontend/
 
 # List contents (optional, for verification)
-RUN ls -l /app
+RUN ls -l /code
 
 # Build frontend (adjust this based on your React build process)
 RUN npm run build
