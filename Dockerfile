@@ -28,20 +28,20 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /code
 
 # Copy backend requirements file
-COPY ./Backend/EcommerceInventory/requirements.txt /code/
+# COPY ./Backend/EcommerceInventory/requirements.txt /code/
 RUN pip install -r requirements.txt
 
 # Copy built frontend to Django static files directory
 # COPY --from=build-stage /app/frontend/build /code/static/
 
 # Copy Django project files
-COPY ./Backend/EcommerceInventory /code/
+COPY ./Backend/EcommerceInventory /code/Backend/EcommerceInventory/
 
 # Collect static files
-RUN python manage.py collectstatic --no-input
+RUN python ./Backend/EcommerceInventory/manage.py collectstatic --no-input
 
 # Expose port 80 (adjust as necessary)
 EXPOSE 80
 
 # Command to run Django server
-CMD ["gunicorn", "--chdir", "EcommerceInventory.wsgi:application", "--bind", "0.0.0.0:80"]
+CMD ["gunicorn", "--chdir", "Backend.EcommerceInventory.EcommerceInventory.wsgi:application", "--bind", "0.0.0.0:80"]
