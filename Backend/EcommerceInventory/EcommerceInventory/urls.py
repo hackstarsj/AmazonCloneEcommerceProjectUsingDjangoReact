@@ -31,7 +31,7 @@ urlpatterns = [
     path('api/superAdminForm/<str:modelName>/',SuperAdminDynamicFormController.as_view(),name='superadmindynamicForm'),
     path('api/getMenus/',ModuleView.as_view(),name='sidebarmenu'),
     path('api/products/',include('ProductServices.urls')),
-    re_path(r'^(?:.*)/?$', index),
+    # re_path(r'^(?:.*)/?$', index),
 
 ]
 
