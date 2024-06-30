@@ -38,6 +38,7 @@ COPY ./Backend/EcommerceInventory /code/Backend/EcommerceInventory/
 RUN pip install -r ./Backend/EcommerceInventory/requirements.txt
 
 # Collect static files
+RUN python ./Backend/EcommerceInventory/manage.py migrate
 RUN python ./Backend/EcommerceInventory/manage.py collectstatic --no-input
 
 # Expose port 80 (adjust as necessary)
