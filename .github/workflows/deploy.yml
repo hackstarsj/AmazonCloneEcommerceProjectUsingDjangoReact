@@ -34,13 +34,13 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
 
-    - name: Copy docker-compose.yml to EC2
-      run: |
-        scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa docker-compose.yml ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/docker-compose.yml
+    # - name: Copy docker-compose.yml to EC2
+    #   run: |
+    #     scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa docker-compose.yml ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/docker-compose.yml
 
-    - name: Copy Dockerfile to EC2
-      run: |
-        scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa Dockerfile ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/Dockerfile
+    # - name: Copy Dockerfile to EC2
+    #   run: |
+    #     scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa Dockerfile ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/Dockerfile
 
 
 
@@ -49,4 +49,9 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
           docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
           docker-compose -f /home/ubuntu/docker-compose.yml up -d
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_USERNAME }}
+          docker pull  ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+          docker stop ecommerce-backend || true
+          docker rm ecommerce-backend || true
+          docker run -d --name ecommerce-backend -p 80:8000 ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
         EOF
