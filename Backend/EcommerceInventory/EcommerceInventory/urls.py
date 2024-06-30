@@ -34,6 +34,10 @@ urlpatterns = [
     # re_path(r'^(?:.*)/?$', index),
 
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Add the catch-all pattern at the end
+urlpatterns += [
+    re_path(r'^(?:.*)/?$', index),
+]
