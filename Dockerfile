@@ -29,13 +29,13 @@ WORKDIR /code
 
 # Copy backend requirements file
 # COPY ./Backend/EcommerceInventory/requirements.txt /code/
-RUN pip install -r requirements.txt
 
 # Copy built frontend to Django static files directory
 # COPY --from=build-stage /app/frontend/build /code/static/
 
 # Copy Django project files
 COPY ./Backend/EcommerceInventory /code/Backend/EcommerceInventory/
+RUN pip install -r ./Backend/EcommerceInventory/requirements.txt
 
 # Collect static files
 RUN python ./Backend/EcommerceInventory/manage.py collectstatic --no-input
