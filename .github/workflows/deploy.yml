@@ -47,8 +47,6 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
-          docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
-          docker-compose -f /home/ubuntu/docker-compose.yml up -d
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_USERNAME }}
           docker pull  ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
           docker stop ecommerce-backend || true

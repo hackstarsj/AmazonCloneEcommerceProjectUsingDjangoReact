@@ -42,6 +42,6 @@ RUN python ./Backend/EcommerceInventory/manage.py collectstatic --no-input
 
 # Expose port 80 (adjust as necessary)
 EXPOSE 80
-
+WORKDIR /code/Backend/EcommerceInventory
 # Command to run Django server
-CMD ["gunicorn", "--chdir", "Backend.EcommerceInventory.EcommerceInventory.wsgi:application", "--bind", "0.0.0.0:80"]
+CMD ["gunicorn", "EcommerceInventory.wsgi:application", "--bind", "0.0.0.0:80"]
