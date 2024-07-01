@@ -1,0 +1,45 @@
+name: Deploy on AWS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on:ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to Dockerhub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker image
+      run : |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
+
+    - name: Deploy on AWS EC2 
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker pull ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+          docker stop ecommerce-backend || true
+          docker rm ecommerce-backend || true
+          docker run -d --name ecommerce-backend -p 80:8000 ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+        EOF
