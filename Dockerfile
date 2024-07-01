@@ -9,6 +9,7 @@ WORKDIR /code
 # # Copy frontend package files
 COPY ./Frontend/ecommerce_inventory/ /code/Frontend/ecommerce_inventory/
 
+WORKDIR /code/Frontend/ecommerce_inventory/
 # # Install frontend dependencies
 RUN npm install
 
