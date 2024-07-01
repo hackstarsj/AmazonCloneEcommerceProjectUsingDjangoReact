@@ -9,6 +9,11 @@ Welcome to the Amazon Clone Project! This project is based on a tutorial series 
 
 - **API Documentaion for Post Man**: [API Documentaion](https://documenter.getpostman.com/view/5800143/2sA3QmEawp)
 
+## CI CD AWS Deployment Step using Docker and Github Action
+
+- **Complete Steps**: [Complete Steps](https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/CI_CD_Deployment_Step_Using_Docker_AWS.txt)
+
+
 ## YouTube Tutorial Series
 
 This project follows the tutorial series available on the SuperCoders YouTube channel. You can watch the entire series using the following links:

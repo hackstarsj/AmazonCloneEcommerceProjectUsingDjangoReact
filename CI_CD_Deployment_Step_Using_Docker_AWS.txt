@@ -1,0 +1,209 @@
+Step 1: Signup in AWS Account for Free Tier
+Step 1A: Create Docker Account Keep save your username and password for future use
+Step 2: Create EC2 Instance using Ubuntu Image
+Step 3: Create RDS for Database -> Select MySQL -> Security Group allow Inbound and Outbound Rules
+Step 4: Login to EC2 using Connect
+Step 5: Install Docker
+Step 6: Download mySql Workbench
+
+Check Docker Image : docker run -it your-dockerhub-username/ecommerce-backend:latest /bin/bash
+Check Docker Logs : docker logs <container_id>
+-----------------------------------Install Docker Code for EC2-----------------------------
+
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Install Docker Compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# Add your user to the docker group
+sudo usermod -aG docker $USER
+
+-------------------------Then Open Port 80 and 8000 for Django in EC2 -------------------------
+sudo ufw allow 8000
+sudo ufw allow 80
+
+-----------Install MySQL CLient Like Workbench or In VScode then Connect Database Server-------
+Create Database From Explore
+
+----------------------------Project Settings and Configurations-------------------------------
+
+.env -> Update Database Setting in .env File
+
+-------------------------------------------------
+
+settings.py
+ALLOWED_HOSTS = ["*"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory for collectstatic
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Directory for static files used in development
+]
+
+TEMPLATES = [
+    {   .......
+        'DIRS': ['EcommerceInventory/templates'], #Add this Template Directory For React
+    }
+
+--------------------------------------------------
+urls.py
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Add the catch-all pattern at the end
+urlpatterns += [
+    re_path(r'^(?:.*)/?$', index),
+]
+
+def index(request):
+    return render(request, 'index.html')
+
+Create templates Directory in Project Folder
+
+--------------------Update API Url in React .env file---------------------------
+REACT_APP_API_URL='API_URL'
+
+-------------------Updating index.html Content of React------------------------
+
+
+-----------------Create Dockerfile in Parent Directory------------------------
+# Stage 1: Build frontend
+FROM node:18 as build-stage
+WORKDIR /code
+
+# # Set working directory for frontend
+# WORKDIR /app/frontend
+
+
+# # Copy frontend package files
+COPY ./Frontend/ecommerce_inventory/ /code/Frontend/ecommerce_inventory/
+
+WORKDIR /code/Frontend/ecommerce_inventory/
+# # Install frontend dependencies
+RUN npm install
+
+# # Copy frontend source code
+# COPY ./Frontend/ecommerce_inventory ./
+
+# # Build frontend (adjust this based on your React build process)
+RUN npm run build
+
+# Stage 2: Build Django backend
+FROM python:3.11.0
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+WORKDIR /code
+
+# Set working directory for backend
+
+# Copy backend requirements file
+# COPY ./Backend/EcommerceInventory/requirements.txt /code/
+
+# Copy built frontend to Django static files directory
+
+# Copy Django project files
+COPY ./Backend/EcommerceInventory /code/Backend/EcommerceInventory/
+
+RUN pip install -r ./Backend/EcommerceInventory/requirements.txt
+COPY --from=build-stage ./code/Frontend/ecommerce_inventory/build ./Backend/EcommerceInventory/static/
+COPY --from=build-stage ./code/Frontend/ecommerce_inventory/build/static ./Backend/EcommerceInventory/static/
+COPY --from=build-stage ./code/Frontend/ecommerce_inventory/build/index.html ./Backend/EcommerceInventory/EcommerceInventory/templates/index.html
+
+# Collect static files
+RUN python ./Backend/EcommerceInventory/manage.py migrate
+RUN python ./Backend/EcommerceInventory/manage.py collectstatic --no-input
+
+# Expose port 80 (adjust as necessary)
+EXPOSE 80
+WORKDIR /code/Backend/EcommerceInventory
+# Command to run Django server
+CMD ["gunicorn", "EcommerceInventory.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+
+-------------Create .github/workflows/deploy.yml file-----------------------------
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - TEST
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker images
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.AWS_EC2_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.AWS_EC2_IP }} >> ~/.ssh/known_hosts
+
+    # - name: Copy docker-compose.yml to EC2
+    #   run: |
+    #     scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa docker-compose.yml ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/docker-compose.yml
+
+    # - name: Copy Dockerfile to EC2
+    #   run: |
+    #     scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa Dockerfile ubuntu@${{ secrets.AWS_EC2_IP }}:/home/ubuntu/Dockerfile
+
+
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.AWS_EC2_IP }} << 'EOF'
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_USERNAME }}
+          docker pull  ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+          docker stop ecommerce-backend || true
+          docker rm ecommerce-backend || true
+          docker run -d --name ecommerce-backend -p 80:8000 ${{ secrets.DOCKER_USERNAME }}/ecommerce-backend:latest
+        EOF
+
+
+
+
+-----------------Add Setting variables in Github---------------------------------
+Repo -> Settings-> Security -> Secrets and variables -> Actions -> New Repository Secret
+
+DOCKER_USERNAME
+DOCKER_PASSWORD
+AWS_EC2_IP
+AWS_EC2_KEY -> key Pair Contents
+
+
+
+--------------------Docker Commands ----------------------------------------
+
+List all Running Container :
+docker ps
+
+List all Container:
+docker ps -a
+
+Enter Docker Image Shell
+docker run -it DOCKER_USENAME/REPO_NAME:latest /bin/bash
+
+Check Docker Logs
+docker logs CONTAINER_ID
