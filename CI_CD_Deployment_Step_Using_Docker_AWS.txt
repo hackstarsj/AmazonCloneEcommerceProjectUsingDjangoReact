@@ -5,9 +5,7 @@ Step 3: Create RDS for Database -> Select MySQL -> Security Group allow Inbound 
 Step 4: Login to EC2 using Connect
 Step 5: Install Docker
 Step 6: Download mySql Workbench
-
-Check Docker Image : docker run -it your-dockerhub-username/ecommerce-backend:latest /bin/bash
-Check Docker Logs : docker logs <container_id>
+Step 7: Add gunicorn==22.0.0 in requirements.txt
 -----------------------------------Install Docker Code for EC2-----------------------------
 
 sudo apt update
