@@ -1,12 +1,13 @@
 # Stage 1: Build frontend
-# FROM node:18 as build-stage
+FROM node:18 as build-stage
+WORKDIR /code
 
 # # Set working directory for frontend
 # WORKDIR /app/frontend
 
 
 # # Copy frontend package files
-# COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/package-lock.json ./
+COPY ./Frontend/ecommerce_inventory/package.json ./Frontend/ecommerce_inventory/
 
 # # Install frontend dependencies
 # RUN npm install
@@ -25,7 +26,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set working directory for backend
-WORKDIR /code
 
 # Copy backend requirements file
 # COPY ./Backend/EcommerceInventory/requirements.txt /code/
