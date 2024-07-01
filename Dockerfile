@@ -10,13 +10,13 @@ WORKDIR /code
 COPY ./Frontend/ecommerce_inventory/ /code/Frontend/ecommerce_inventory/
 
 # # Install frontend dependencies
-# RUN npm install
+RUN npm install
 
 # # Copy frontend source code
 # COPY ./Frontend/ecommerce_inventory ./
 
 # # Build frontend (adjust this based on your React build process)
-# RUN npm run build
+RUN npm run build
 
 # Stage 2: Build Django backend
 FROM python:3.11.0
@@ -32,11 +32,12 @@ WORKDIR /code
 # COPY ./Backend/EcommerceInventory/requirements.txt /code/
 
 # Copy built frontend to Django static files directory
-# COPY --from=build-stage /app/frontend/build /code/static/
 
 # Copy Django project files
 COPY ./Backend/EcommerceInventory /code/Backend/EcommerceInventory/
+
 RUN pip install -r ./Backend/EcommerceInventory/requirements.txt
+COPY --from=build-stage ./code/Frontend/ecommerce_inventory/build ./Backend/EcommerceInventory/static/
 
 # Collect static files
 RUN python ./Backend/EcommerceInventory/manage.py migrate
