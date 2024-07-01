@@ -39,7 +39,7 @@ COPY ./Backend/EcommerceInventory /code/Backend/EcommerceInventory/
 
 RUN pip install -r ./Backend/EcommerceInventory/requirements.txt
 COPY --from=build-stage ./code/Frontend/ecommerce_inventory/build ./Backend/EcommerceInventory/static/
-COPY ./code/Frontend/ecommerce_inventory/build/index.html ./Backend/EcommerceInventory/EcommerceInventory/templates/index.html
+COPY --from=build-stage ./code/Frontend/ecommerce_inventory/build/index.html ./Backend/EcommerceInventory/EcommerceInventory/templates/index.html
 
 # Collect static files
 RUN python ./Backend/EcommerceInventory/manage.py migrate
