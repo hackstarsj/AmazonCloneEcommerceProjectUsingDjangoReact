@@ -24,6 +24,7 @@ FROM python:3.11.0
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+WORKDIR /code
 
 # Set working directory for backend
 
