@@ -10,6 +10,7 @@ import Edit from '@mui/icons-material/Edit';
 import ExpandLessRounded from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
 import ExpanableRow from "./ExpandableRow";
+import RenderImage from "../../components/RenderImage";
 
 const ManageCategories = () => {
     const [data,setData]=useState([]);
@@ -105,7 +106,7 @@ const ManageCategories = () => {
                 }
                 else if(key==='image'){
                     columns.push({field:key,headerName:key.charAt(0).toUpperCase()+key.slice(1).replaceAll("_"," "),width:150,sortable:false,renderCell:(params)=>{
-                        return (params.row.image && params.row.image!=='' && isValidUrl(params.row.image))?<img src={params.row.image} alt={params.row.name} style={{width:70,height:70,padding:'5px'}}/>:<Typography variant="body2" pt={3} pb={3}>No Image</Typography> 
+                        return <RenderImage data={params.row.image} name={params.row.name}/>
                     }})
                 }
                 else{

@@ -43,12 +43,46 @@ export const getUser=()=>{
 
 export const isValidUrl=(url)=>{
     try{
-        new URL(url);
+        if(Array.isArray(url)){
+            let image=url.filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);
+            new URL(image[0]);
+        }
+        else if(checkIsJson(url) && JSON.parse(url).length>0){
+            let image=JSON.parse(url).filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);
+            new URL(image[0]);
+        }
+        else{
+            new URL(url);
+        }
         return true;
     }
     catch(e){
         return false;
     }
+}
+
+export const getImageUrl=(url)=>{
+    if(Array.isArray(url)){
+        let image=url.filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);
+        return image[0];
+    }
+    else if(checkIsJson(url) && JSON.parse(url).length>0){
+        let image=JSON.parse(url).filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);
+        return image[0];
+    }
+    else{
+        return url;
+    }
+}
+
+export const checkIsJson=(str)=>{
+    try{
+        JSON.parse(str);
+    }
+    catch(e){
+        return false;
+    }
+    return true;
 }
 
 export const getFormTypes=()=>{

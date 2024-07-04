@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, re_path
 
-from EcommerceInventory.views import index
+from EcommerceInventory.views import index,FileUploadViewInS3
 from EcommerceInventory import settings
 from UserServices.Controller.DynamicFormController import DynamicFormController
 from UserServices.Controller.SuperAdminDynamicFormController import SuperAdminDynamicFormController
 from UserServices.Controller.SidebarController import ModuleView
 from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('api/superAdminForm/<str:modelName>/',SuperAdminDynamicFormController.as_view(),name='superadmindynamicForm'),
     path('api/getMenus/',ModuleView.as_view(),name='sidebarmenu'),
     path('api/products/',include('ProductServices.urls')),
+    path('api/uploads/',FileUploadViewInS3.as_view(),name='fileupload')
 ]
 
 if settings.DEBUG:
