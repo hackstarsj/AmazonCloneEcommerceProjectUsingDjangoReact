@@ -155,6 +155,10 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/14.png" alt="Amazon Clone Project Manage Category" style="width: 100%;"/>
 
+## Added Multi File Upload with Preview in Dynamic Form 
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/15.png" alt="Amazon Clone Project Dynamic Form with Multi File Upload" style="width: 100%;"/>
+
 
 ## Commits
 # Commit Tree

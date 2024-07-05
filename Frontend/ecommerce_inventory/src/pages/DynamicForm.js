@@ -104,7 +104,7 @@ const DynamicForm=()=>{
             <Box mt={2} display="flex" justifyContent="space-between">
             {currentStep>0 && (<Button type='button' variant="contained" color="primary" onClick={()=>goToStep(currentStep-1)}><ArrowBackIosIcon sx={{fontSize:'18px',marginRight:'5px'}}/> Back</Button>)}
             {currentStep<steps.length-1 && <Button type='button' variant="contained" color="primary" onClick={()=>nextStep()}> Next <ArrowForwardIosIcon sx={{fontSize:'18px',marginLeft:'5px'}}/></Button>}
-            {<Button sx={{display:currentStep==steps.length-1?'block':'none'}} variant="contained" color="primary" type="submit"><SaveIcon sx={{fontSize:'20px',marginRight:'5px',margingTop:'8px'}}/> Submit</Button>}
+            {<Button sx={{display:currentStep===steps.length-1?'inline-flex':'none'}} variant="contained" color="primary" type="submit"><SaveIcon sx={{fontSize:'20px',marginRight:'5px',margingTop:'8px'}}/> Submit</Button>}
             </Box>
             </form>
             </FormProvider>
