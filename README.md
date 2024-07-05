@@ -120,6 +120,36 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 ### Empty Dashboard 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/first.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
 
+### DIfferent Themes
+
+## Light Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/16.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Blue Light Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/17.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Blue Dark Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/22.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Green Light Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/18.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Green Dark Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/19.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Red Light Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/20.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Red Dark Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/21.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Orange Light Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/23.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+## Orange Dark Theme
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/24.png" alt="Amazon Clone Project Empty Dashboard" style="width: 100%;"/>
+
+
 ### Dynamic Form For Add Product ScreenShot with JSON Key Value Pair Input and Multi Step form
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/2.png" alt="Amazon Clone Project Add Products" style="width: 100%;"/>
