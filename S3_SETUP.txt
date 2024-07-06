@@ -1,0 +1,39 @@
+Step 1. Create S3 Buckets
+Step 2. Create Folder uploads
+Step 3. Try Manual File Upload
+Step 4. Try to Access File manually
+Step 5. Change to Public Setting 
+Step 6. Add Policy Setting
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowPublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::supercoder-bucket/*"
+        }
+    ]
+}
+
+Step 7: Then Access File
+Step 8: Create IAM User with S3 Access
+Step 9: Create Server Key
+Step 10: Setup Django API for Upload File in S3
+
+Step 11: Create Django API
+
+Install pip install boto3 django-storages
+
+Add in Settings.py
+
+import os
+from storages.backends.s3boto3 import S3Boto3Storage
+
+# AWS S3 settings
+AWS_ACCESS_KEY_ID = 'YOUR_ACCESS_ID'
+AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY'
+AWS_STORAGE_BUCKET_NAME = 'AWS_STORAGE_BUCKET_NAME'
+AWS_S3_REGION_NAME = 'AWS_S3_REGION_NAME'  # e.g., 'us-east-1'
+
