@@ -59,6 +59,7 @@ const ManageCategories = () => {
     }
     const onEditClick=(params)=>{
         console.log(params);
+        navigate(`/form/category/${params.row.id}`)
     }
     const onAddClick=(params)=>{
         console.log(params);

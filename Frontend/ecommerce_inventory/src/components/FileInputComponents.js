@@ -6,13 +6,29 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { Delete } from '@mui/icons-material';
 import Button from '@mui/material/Button';
 import { toast } from 'react-toastify';
+import { checkIsJson, getFileMimeTypeFromFileName, getFileNameFromUrl } from '../utils/Helper';
 
 const FileInputComponent = ({field}) => {
-    const {register,formState:{errors},watch,setValue} = useFormContext();
+    const {register,formState:{errors},watch,setValue,resetField} = useFormContext();
     const {callApi,loading}=useApi();
     const [selectedFiles,setSelectedFiles]=useState([]);
     const [filePreviews,setFilePreviews]=useState([]);
     const [fileUploaded,setFileUploaded]=useState(false);
+    const [oldFiles,setOldFiles]=useState((checkIsJson(field.default) && Array.isArray(JSON.parse(field.default)))?JSON.parse(field.default):[])
+    const [oldFilePreviews,setOldFilePreviews]=useState([]);
+    const [newFilesUrl,setNewFilesUrl]=useState([])
+
+    useEffect(()=>{
+        if(oldFiles.length>0){
+            const preview=oldFiles.map((file,index)=>({
+                url:new URL(file),
+                name:getFileNameFromUrl(file),
+                type:getFileMimeTypeFromFileName(getFileNameFromUrl(file)).split('/')[0]
+            }))
+
+            setOldFilePreviews(preview);
+        }
+    },[oldFiles])
 
     const handleDeleteImage=(index)=>{
         // Delete File Actual
@@ -28,6 +44,33 @@ const FileInputComponent = ({field}) => {
         setFileUploaded(false);
     }
 
+    const handleDeleteImageOld=(index)=>{
+        // Delete File Actual
+        const updatedFiles=[...oldFiles]
+        updatedFiles.splice(index,1);
+        setOldFiles(updatedFiles);
+
+        //Delete File preview
+        const updatedPreviews=[...oldFilePreviews];
+        updatedPreviews.splice(index,1);
+        setOldFilePreviews(updatedPreviews);
+
+    }
+
+    useEffect(()=>{
+        buildFileUrls();
+    },[oldFiles,newFilesUrl])
+    
+    const buildFileUrls=()=>{
+        const finalUrl=[...oldFiles,...newFilesUrl];
+        if(finalUrl.length>0){
+            setValue(field.name,JSON.stringify(finalUrl));
+        }
+        else{
+            resetField(field.name);
+        }
+    }
+
     const uploadFiles=async()=>{
         try{
             const formData=new FormData();
@@ -36,7 +79,7 @@ const FileInputComponent = ({field}) => {
             })
 
             const response=await callApi({url:'uploads/',method:'post',body:formData,header:{'Content-Type':'multipart/form-data'}});
-            setValue(field.name,JSON.stringify(response?.data?.urls));
+            setNewFilesUrl(response?.data?.urls);
             toast.success(response?.data?.message);
             setFileUploaded(true);
         }
@@ -52,9 +95,9 @@ const FileInputComponent = ({field}) => {
     }
 
     useEffect(()=>{
-        if(!selectedFiles.length && watch(field.name)){
+        if(!selectedFiles.length && watch(field.name) && Array.from(watch(field.name)).filter((item)=>item instanceof File).length>0){
             console.log(watch(field.name));
-            const fileArray=Array.from(watch(field.name)) || [];
+            const fileArray=Array.from(watch(field.name)).filter((item)=>item instanceof File) || [];
             setSelectedFiles(fileArray);
             const preview=fileArray.map((file,index)=>({
                 url:URL.createObjectURL(file),
@@ -65,6 +108,7 @@ const FileInputComponent = ({field}) => {
             setFilePreviews(preview);
             setFileUploaded(false);
         }
+        buildFileUrls();
     },[watch(field.name)]);
 
     return (
@@ -75,7 +119,7 @@ const FileInputComponent = ({field}) => {
                     {
                         file.type==='image'?<img src={file.url} alt={file.name} style={{width:'60px',height:'60px'}} />:<DescriptionIcon sx={{width:'60px',height:'60px'}} />
                     }
-                   <Typography variant='body1' p={1}>{file.name}</Typography>
+                   <Typography variant='body1' p={1} sx={{width:'230px',wordWrap:'break-word'}}>{file.name}</Typography>
                    <IconButton onClick={()=>handleDeleteImage(index)} sx={{color:'red'}}>
                         <Delete/>
                    </IconButton>
@@ -88,11 +132,6 @@ const FileInputComponent = ({field}) => {
                     <Box component={"div"} className='fileInput' mt={1}>
                         <input type='file' multiple {...register(field.name,{required:field.required})} />
                     </Box>
-                    {
-                    !!errors[field.name] && <Alert variant="outlined" severity='error'>
-                        This Field is Required  
-                    </Alert>
-                    }
             </Box>
         }
         {
@@ -104,6 +143,29 @@ const FileInputComponent = ({field}) => {
                 </Box>
             )
         }
+        {
+            oldFilePreviews.length>0 && <Typography mt={2} variant='h6'>Modify Old Files</Typography>
+        }
+        {
+            oldFilePreviews.length>0 && oldFilePreviews.map((file,index)=>(
+                <Box key={index} sx={{display:'flex',alignItems:'center',mb:2}}>
+                    {
+                        file.type==='image'?<img src={file.url} alt={file.name} style={{width:'60px',height:'60px'}} />:<DescriptionIcon sx={{width:'60px',height:'60px'}} />
+                    }
+                    <Typography variant='body1' p={1} sx={{width:'230px',wordWrap:'break-word'}}>{file.name}</Typography>
+                    <IconButton onClick={()=>handleDeleteImageOld(index)} sx={{color:'red'}}>
+                        <Delete/>
+                    </IconButton>
+                </Box>
+            ))
+        }
+        {
+            !!errors[field.name] && <Alert variant="outlined" severity='error' sx={{marginTop:'10px'}}>
+                This Field is Required and Upload the Files if Already Selected
+            </Alert>
+        }
+
+
         </>
     )
 }

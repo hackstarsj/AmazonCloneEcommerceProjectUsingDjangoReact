@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('UserServices.urls')),
     path('api/getForm/<str:modelName>/',DynamicFormController.as_view(),name='dynamicForm'),
+    path('api/getForm/<str:modelName>/<str:id>/',DynamicFormController.as_view(),name='dynamicForm'),
     path('api/superAdminForm/<str:modelName>/',SuperAdminDynamicFormController.as_view(),name='superadmindynamicForm'),
     path('api/getMenus/',ModuleView.as_view(),name='sidebarmenu'),
     path('api/products/',include('ProductServices.urls')),

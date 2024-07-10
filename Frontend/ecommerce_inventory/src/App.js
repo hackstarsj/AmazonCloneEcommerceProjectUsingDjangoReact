@@ -33,7 +33,8 @@ function App() {
         element:<Layout sidebarList={items}/>,
         children:[
           {path:"/",element:<ProtectedRoute element={<Home/>}/>},
-          {path:"/form/:formName",element:<ProtectedRoute element={<DynamicForm/>}/>},
+          {path:"/home",element:<ProtectedRoute element={<Home/>}/>},
+          {path:"/form/:formName/:id?",element:<ProtectedRoute element={<DynamicForm/>}/>},
           {path:"/manage/category",element:<ProtectedRoute element={<ManageCategories/>}/>}
         ]},
     ]

@@ -12,22 +12,24 @@ import { FormProvider, get } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { getFormTypes } from '../utils/Helper';
-
+import { useNavigate } from 'react-router-dom';
 const DynamicForm=()=>{
     const stepItems=getFormTypes();
-    const {formName}=useParams();
+    const {formName,id}=useParams();
     const {error,loading,callApi}=useApi();
     const [formConfig,setFormConfig]=useState(null);
     const [currentStep,setCurrentStep]=useState(0);
     const methods=useForm();
     const [steps,setSteps]=useState(stepItems)
+    const navigate=useNavigate();
 
     useEffect(()=>{
         fetchForm();
     },[formName])
 
     const fetchForm=async()=>{
-        const response=await callApi({url:`getForm/${formName}/`});
+        const PID=id?`${id}/`:'';
+        const response=await callApi({url:`getForm/${formName}/${PID}`});
         let stepFilter=stepItems.filter(step=>response.data.data[step.fieldType] && response.data.data[step.fieldType].length>0);
         setSteps(stepFilter);
         setFormConfig(response.data);
@@ -40,10 +42,25 @@ const DynamicForm=()=>{
 
     const onSubmit=async(data)=>{
         try{
-            const response=await callApi({url:`getForm/${formName}/`,method:'post',body:data});
+            let isError=false;
+            const currentStepFields=getCurrentStepFields();
+            const errors=validateCurrentStepFields(currentStepFields);
+            if(errors.length>0){
+                errors.forEach(error=>{
+                    methods.setError(error.name,{type:'manual',message:`${error.label} is Required`})
+                    isError=true;
+                })
+            }
+            if(isError){
+                return;
+            }
+            
+            const PID=id?`${id}/`:'';
+            const response=await callApi({url:`getForm/${formName}/${PID}`,method:'post',body:data});
             toast.success(response.data.message);
             setCurrentStep(0);
             methods.reset();
+            navigate(`/manage/${formName}`)
         }
         catch(err){
             console.log(err);
@@ -79,9 +96,9 @@ const DynamicForm=()=>{
 
     return (
         <Container>
-            <Typography variant="h6" gutterBottom>Add {formName.toUpperCase()}</Typography>
+            <Typography variant="h6" gutterBottom>{id?'EDIT':'ADD'} {formName.toUpperCase()}</Typography>
             <Divider sx={{margingTop:'15px',marginBottom:'15px'}}/>
-            <Stepper activeStep={currentStep} alternativeLabel>
+            <Stepper activeStep={currentStep} sx={{overflowX:'auto'}} alternativeLabel>
                 {steps.map((step,index)=>(
                     <Step key={index} onClick={()=>goToStep(index)}>
                         <StepLabel>{step.label}</StepLabel>

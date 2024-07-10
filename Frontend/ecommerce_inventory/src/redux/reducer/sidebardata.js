@@ -6,7 +6,7 @@ export const fetchSidebar=createAsyncThunk('data/fetchSidebar',async()=>{
     const response=await axios.get(`${config.API_URL}getMenus/`);
     const sidebarData=response.data.data;
     const setActiveAndExpanded=(item)=>{
-        if(item.module_url && window.location.pathname===item.module_url){
+        if(item.module_url && window.location.pathname.indexOf(item.module_url)!==-1){
             item.active=true;
             item.expanded=true;
             return true;
@@ -63,7 +63,7 @@ const sidebarSlice=createSlice({
                 item.expanded=false;
                 item.submenus.forEach(submenu=>{
                     submenu.active=false;
-                    if(submenu.module_url && window.location.pathname===submenu.module_url){
+                    if(submenu.module_url && window.location.pathname.indexOf(item.module_url)!==-1){
                         submenu.active=true;
                         item.active=true;
                         item.expanded=true;

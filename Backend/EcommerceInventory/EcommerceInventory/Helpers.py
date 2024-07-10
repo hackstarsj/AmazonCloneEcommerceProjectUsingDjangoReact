@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import exception_handler 
 from rest_framework.exceptions import AuthenticationFailed,NotAuthenticated,PermissionDenied
 from rest_framework.pagination import PageNumberPagination
+from django.forms.models import model_to_dict
 
 def getDynamicFormModels():
     return {
@@ -66,6 +67,7 @@ def getDynamicFormFields(model_instance,domain_user_id):
 
                 fielddata['options']=[{'id':option[0],'value':option[1]} for option in options]
                 fielddata['type']='select'
+                fielddata['default']=model_to_dict(model_instance)[field.name] if field.name in model_to_dict(model_instance) else ''
         fields[fielddata['type']].append(fielddata)                
     return fields
 
