@@ -63,7 +63,7 @@ const sidebarSlice=createSlice({
                 item.expanded=false;
                 item.submenus.forEach(submenu=>{
                     submenu.active=false;
-                    if(submenu.module_url && window.location.pathname.indexOf(item.module_url)!==-1){
+                    if(submenu.module_url && window.location.pathname.indexOf(submenu.module_url)!==-1){
                         submenu.active=true;
                         item.active=true;
                         item.expanded=true;

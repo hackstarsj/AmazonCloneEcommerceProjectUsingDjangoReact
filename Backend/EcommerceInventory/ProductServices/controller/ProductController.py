@@ -1,5 +1,5 @@
 from EcommerceInventory.Helpers import CustomPageNumberPagination, renderResponse
-from ProductServices.models import Categories
+from ProductServices.models import Products
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticated
@@ -7,43 +7,38 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db.models import Q
 from django.db import models
 
-class CategorySerializer(serializers.ModelSerializer):
-    children = serializers.SerializerMethodField()
+class ProductSerializer(serializers.ModelSerializer):
+    category_id=serializers.SerializerMethodField()
     domain_user_id=serializers.SerializerMethodField()
     added_by_user_id=serializers.SerializerMethodField()
-    parent_id=serializers.SerializerMethodField()
-
     class Meta:
-        model = Categories
+        model = Products
         fields = '__all__'
 
-    def get_children(self, obj):
-        children = Categories.objects.filter(parent_id=obj.id)
-        return CategorySerializer(children, many=True).data
-
+    def get_category_id(self,obj):
+        return "#"+str(obj.category_id.id)+" "+obj.category_id.name
+    
     def get_domain_user_id(self,obj):
         return "#"+str(obj.domain_user_id.id)+" "+obj.domain_user_id.username
     
     def get_added_by_user_id(self,obj):
         return "#"+str(obj.added_by_user_id.id)+" "+obj.added_by_user_id.username
-    
-    def get_parent_id(self,obj):
-        return "#"+str(obj.parent_id.id)+" "+obj.parent_id.name if obj.parent_id else None
-class CategoryListView(generics.ListAPIView):
-    serializer_class = CategorySerializer
+
+
+class ProductListView(generics.ListAPIView):
+    serializer_class = ProductSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPageNumberPagination
 
-
     def get_queryset(self):
-        queryset=Categories.objects.filter(parent_id__isnull=True).filter(domain_user_id=self.request.user.domain_user_id.id)
+        queryset=Products.objects.filter(domain_user_id=self.request.user.domain_user_id.id)
         search_query=self.request.query_params.get('search',None)
 
         if search_query:
             search_conditions=Q()
 
-            for field in Categories._meta.get_fields():
+            for field in Products._meta.get_fields():
                 if isinstance(field,(models.CharField,models.TextField)):
                     search_conditions|=Q(**{f"{field.name}__icontains":search_query})
             queryset=queryset.filter(search_conditions)
@@ -75,4 +70,4 @@ class CategoryListView(generics.ListAPIView):
             page_size=len(data)
             total_items=len(data)
 
-        return renderResponse(data={'data':data,'totalPages':total_pages,'currentPage':current_page,'pageSize':page_size,'totalItems':total_items},message='Categories Retrieved Successfully',status=200)
+        return renderResponse(data={'data':data,'totalPages':total_pages,'currentPage':current_page,'pageSize':page_size,'totalItems':total_items},message='Products Retrieved Successfully',status=200)
