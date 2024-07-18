@@ -14,7 +14,7 @@ const FileInputComponent = ({field}) => {
     const [selectedFiles,setSelectedFiles]=useState([]);
     const [filePreviews,setFilePreviews]=useState([]);
     const [fileUploaded,setFileUploaded]=useState(false);
-    const [oldFiles,setOldFiles]=useState((checkIsJson(field.default) && Array.isArray(JSON.parse(field.default)))?JSON.parse(field.default):[])
+    const [oldFiles,setOldFiles]=useState(Array.isArray(field.default)?field.default:[])
     const [oldFilePreviews,setOldFilePreviews]=useState([]);
     const [newFilesUrl,setNewFilesUrl]=useState([])
 
@@ -64,7 +64,7 @@ const FileInputComponent = ({field}) => {
     const buildFileUrls=()=>{
         const finalUrl=[...oldFiles,...newFilesUrl];
         if(finalUrl.length>0){
-            setValue(field.name,JSON.stringify(finalUrl));
+            setValue(field.name,finalUrl);
         }
         else{
             resetField(field.name);
@@ -136,8 +136,8 @@ const FileInputComponent = ({field}) => {
         }
         {
             selectedFiles.length>0 && !fileUploaded && (
-                loading?<LinearProgress sx={{width:'100%'}}/>:
-                <Box mt={2} display="flex" justifyContent="space-between">
+                loading?<LinearProgress sx={{width:'100%',mb:2}}/>:
+                <Box mt={2} display="flex" justifyContent="space-between" mb={2}>
                     <Button onClick={uploadFiles} variant='contained' color='primary'>Upload Files</Button>
                     <Button onClick={deleteAllFiles} color='primary' variant='contained'>Delete All Files</Button>
                 </Box>
@@ -160,7 +160,7 @@ const FileInputComponent = ({field}) => {
             ))
         }
         {
-            !!errors[field.name] && <Alert variant="outlined" severity='error' sx={{marginTop:'10px'}}>
+            !!errors[field.name] && <Alert variant="outlined" severity='error' sx={{marginTop:'10px',marginBottom:'10px'}}>
                 This Field is Required and Upload the Files if Already Selected
             </Alert>
         }

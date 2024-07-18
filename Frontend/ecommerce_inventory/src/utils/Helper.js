@@ -45,7 +45,14 @@ export const isValidUrl=(url)=>{
     try{
         if(Array.isArray(url)){
             let image=url.filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);
-            new URL(image[0]);
+            if(image.length>0){
+                new URL(image[0]);
+            }
+            else{
+                if(url.length>0){
+                    new URL(url[0]);
+                }
+            }
         }
         else if(checkIsJson(url) && JSON.parse(url).length>0){
             let image=JSON.parse(url).filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);
@@ -64,7 +71,17 @@ export const isValidUrl=(url)=>{
 export const getImageUrl=(url)=>{
     if(Array.isArray(url)){
         let image=url.filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);
-        return image[0];
+        if(image.length>0){
+            return image[0];
+        }
+        else{
+            if(url.length>0){
+                return url[0];
+            }
+            else{
+                return url;
+            }
+        }
     }
     else if(checkIsJson(url) && JSON.parse(url).length>0){
         let image=JSON.parse(url).filter((item)=>item.match(/\.(jpeg|jpg|gif|png)$/)!=null);

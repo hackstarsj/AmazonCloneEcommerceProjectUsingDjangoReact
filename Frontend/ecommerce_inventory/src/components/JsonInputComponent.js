@@ -1,7 +1,7 @@
 import {useFormContext} from 'react-hook-form';
 import { Box,Divider,Icon,TextField } from "@mui/material";
 import { Delete } from '@mui/icons-material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, IconButton } from '@mui/material';
 
@@ -12,6 +12,13 @@ const JsonInputComponent =({fields})=>{
         const newPairs=keyValuePairs.filter((_,i)=>i!==index);
         setKeyValuePairs(newPairs);
     }
+
+    useEffect(()=>{
+        if(fields.default){
+            setKeyValuePairs([...keyValuePairs,...fields.default]);
+        }
+    },[])
+
     const handleKeyValueAdd=()=>{
         setKeyValuePairs([...keyValuePairs,{key:'',value:''}])
     }

@@ -111,7 +111,26 @@ export const GlobalStyles = () => {
         .active-sidebar svg{
           color:${theme.palette.background.light}!important;
         }
-        
+        .shimmer{
+          width:100%;
+          height:100%;
+          margin:10px;
+          background: linear-gradient(to right, ${theme.palette.background.paper} 8%, ${theme.palette.background.default} 18%, ${theme.palette.background.paper} 33%);
+          background-size: 800px 104px;
+          animation:shimmer 1.2s infinite;
+          border-radius:8px;
+        }
+          @keyframes shimmer{
+              0%{
+                  background-position:-800px 0;
+              }
+              100%{
+                  background-position:800px 0;
+              }
+          }
+          .MuiDialogContent-root{
+            background-color:${theme.palette.background.default};
+          }
       `}
     />
   );

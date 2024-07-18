@@ -2,10 +2,10 @@ import { width } from "@mui/system"
 import { Box, Collapse, Typography } from "@mui/material"
 import { DataGrid, GridRow, GridToolbar } from "@mui/x-data-grid"
 import { IconButton } from "@mui/material"
-import { Add, Delete, Edit } from "@mui/icons-material"
+import { Add, Delete, Edit, Panorama, PanoramaRounded } from "@mui/icons-material"
 import RenderImage from "../../components/RenderImage"
 
-const ExpanableRow=({row,props,onEditClick,onDeleteClick})=>{
+const ExpanableRow=({row,props,onEditClick,onDeleteClick,setShowImages,setSelectedImages})=>{
     let columns=[]
     if(row.children && row.children.length>0){
         columns=Object.keys(row.children[0]).map(key=>({
@@ -15,7 +15,7 @@ const ExpanableRow=({row,props,onEditClick,onDeleteClick})=>{
         })).filter((item)=>item.field!=='children').filter((item)=>item.field!=='image');
 
         columns.push({field:'image',headerName:'Image',width:150,sortable:false,renderCell:(params)=>{
-            return <RenderImage data={params.row.image} name={params.row.name}/>
+            return <Box display={"flex"}><RenderImage data={params.row.image} name={params.row.name}/><IconButton onClick={()=>{ setShowImages && setShowImages(true); setSelectedImages && setSelectedImages(params.row.image)  }}><PanoramaRounded/></IconButton></Box>
         }});
         columns=[{field:'action',headerName:'Action',width:180,sortable:false,renderCell:(params)=>{
             return <>
