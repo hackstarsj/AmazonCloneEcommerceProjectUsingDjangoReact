@@ -197,6 +197,20 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/27.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
 
+## Added Manage Product Review and Manage Product Questions and Preview Images
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/28.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/29.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/30.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/31.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/32.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/33.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
+
 
 ## Commits
 # Commit Tree
