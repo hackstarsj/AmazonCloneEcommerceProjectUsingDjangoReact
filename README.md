@@ -13,6 +13,8 @@ Welcome to the Amazon Clone Project! This project is based on a tutorial series 
 
 - **Complete Steps**: [Complete Steps](https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/CI_CD_Deployment_Step_Using_Docker_AWS.txt)
 
+-- **Video Steps** : [Deployment in AWS](https://youtu.be/QHCsaG9dLI4)
+
 
 ## YouTube Tutorial Series
 
