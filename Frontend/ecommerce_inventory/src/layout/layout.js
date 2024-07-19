@@ -177,7 +177,7 @@ const Layout = ({sidebarList,pageTitle}) => {
       className='sidebar'
     >
       <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
-        <img src={logo} alt="Logo" className='logo' style={{ marginRight: '16px' }} />
+        <img src={'/logo_l.png'} alt="Logo" className='logo' style={{ marginRight: '16px',width:'100%' }} />
         
       </Box>
       <List sx={{ '& .MuiListItem-root': { transition: 'background-color 0.3s' } }}>

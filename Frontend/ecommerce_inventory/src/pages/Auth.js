@@ -107,7 +107,7 @@ const doLogin = async(e) => {
           <Card sx={{ maxWidth: 400, width: '100%' }}>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-                <img src={'https://picsum.photos/100'} alt="Logo" style={{ borderRadius: '50%' }} />
+                <img src={'/logo.png'} alt="Logo" style={{ borderRadius: '50%',width:'100px' }} />
               </Box>
               <Typography variant="h5" align="center" gutterBottom>
                 EzyMarket
