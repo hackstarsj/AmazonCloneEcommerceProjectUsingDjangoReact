@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material/styles';
-
 // Dark Theme
 export const orangeDarkTheme = createTheme({
   typography: {
@@ -72,6 +71,10 @@ export const orangeDarkTheme = createTheme({
         },
       },
     },
+  },
+  logo:{
+    rectangle:'/logo_light.png',
+    square:'/logo_square_light.png',
   },
 });
 
@@ -146,6 +149,10 @@ export const orangeLightTheme = createTheme({
         },
       },
     },
+  },
+  logo:{
+    rectangle:'/logo_dark.png',
+    square:'/logo_square_dark.png',
   },
 });
 
@@ -224,6 +231,10 @@ export const redDarkTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_light.png',
+    square:'/logo_square_light.png',
+  },
 });
 
 export const redLightTheme = createTheme({
@@ -300,6 +311,11 @@ export const redLightTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_dark.png',
+    square:'/logo_square_dark.png',
+  },
+
 });
 export const greenDarkTheme = createTheme({
   typography: {
@@ -372,6 +388,10 @@ export const greenDarkTheme = createTheme({
         },
       },
     },
+  },
+  logo:{
+    rectangle:'/logo_light.png',
+    square:'/logo_square_light.png',
   },
 });
 export const greenLightTheme = createTheme({
@@ -448,6 +468,11 @@ export const greenLightTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_dark.png',
+    square:'/logo_square_dark.png',
+  },
+
 });
 
 export const blueDarkTheme = createTheme({
@@ -522,6 +547,11 @@ export const blueDarkTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_light.png',
+    square:'/logo_square_light.png',
+  },
+
 });
 
 export const blueLightTheme = createTheme({
@@ -598,6 +628,10 @@ export const blueLightTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_dark.png',
+    square:'/logo_square_dark.png',
+  },
 });
 
 
@@ -667,6 +701,10 @@ export const customTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_dark.png',
+    square:'/logo_square_dark.png',
+  },
 });
 export const lightTheme = createTheme({
   typography: {
@@ -685,6 +723,7 @@ export const lightTheme = createTheme({
     background: {
       paper: 'rgba(241, 244, 250, 1)',
       default: 'rgba(255, 255, 255, 1)',
+      light: 'rgba(255, 255, 255, 1)',
     },
     error: {
       main: 'rgba(255, 0, 0, 1)', // Set error color to red
@@ -762,6 +801,11 @@ export const lightTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_dark.png',
+    square:'/logo_square_dark.png',
+  },
+
 });
 
 
@@ -833,6 +877,10 @@ export const darkTheme = createTheme({
       },
     },
   },
+  logo:{
+    rectangle:'/logo_light.png',
+    square:'/logo_square_light.png',
+  },
 });
 export const basicTheme = createTheme({
   typography: {
@@ -864,6 +912,10 @@ export const basicTheme = createTheme({
     text: {
       primary: 'rgba(255, 255, 255, 1)',
     },
+  },
+  logo:{
+    rectangle:'/logo_light.png',
+    square:'/logo_square_light.png',
   },
   components: {
     MuiButton: {
