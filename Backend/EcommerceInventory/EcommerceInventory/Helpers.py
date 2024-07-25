@@ -172,7 +172,7 @@ def createParsedCreatedAtUpdatedAt(cls):
         return obj.created_at.strftime('%dth %B %Y, %H:%M')
     
     def get_formatted_updated_at(self,obj):
-        return obj.created_at.strftime('%dth %B %Y, %H:%M')
+        return obj.updated_at.strftime('%dth %B %Y, %H:%M')
     
     cls.get_formatted_created_at=get_formatted_created_at
     cls.get_formatted_updated_at=get_formatted_updated_at
