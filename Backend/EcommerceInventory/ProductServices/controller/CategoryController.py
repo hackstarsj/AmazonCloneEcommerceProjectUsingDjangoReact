@@ -1,4 +1,4 @@
-from EcommerceInventory.Helpers import CommonListAPIMixin, CustomPageNumberPagination, renderResponse
+from EcommerceInventory.Helpers import CommonListAPIMixin, CustomPageNumberPagination, createParsedCreatedAtUpdatedAt, renderResponse
 from ProductServices.models import Categories
 from rest_framework import generics
 from rest_framework import serializers
@@ -7,6 +7,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db.models import Q
 from django.db import models
 
+@createParsedCreatedAtUpdatedAt
 class CategorySerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
     domain_user_id=serializers.SerializerMethodField()

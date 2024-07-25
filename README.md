@@ -213,6 +213,13 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/33.png" alt="Amazon Clone Project Manange Product Page" style="width: 100%;"/>
 
+## Added Complete Warehouse and Rack Shelf and Floor Management
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/34.png" alt="Amazon Clone Project Manange Warehouse" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/35.png" alt="Amazon Clone Project Manange Warehouse" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/36.png" alt="Amazon Clone Project Manange Warehouse" style="width: 100%;"/>
 
 ## Commits
 # Commit Tree

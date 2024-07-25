@@ -1,5 +1,5 @@
 from UserServices.models import Users
-from EcommerceInventory.Helpers import CommonListAPIMixin, CustomPageNumberPagination, renderResponse
+from EcommerceInventory.Helpers import CommonListAPIMixin, CustomPageNumberPagination, createParsedCreatedAtUpdatedAt, renderResponse
 from ProductServices.models import ProductQuestions, ProductReviews, Products
 from rest_framework import generics
 from rest_framework import serializers
@@ -8,6 +8,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.db.models import Q
 from django.db import models
 
+@createParsedCreatedAtUpdatedAt
 class ProductReviewSerializer(serializers.ModelSerializer):
     review_user_id=serializers.SerializerMethodField()
     class Meta:
@@ -17,6 +18,7 @@ class ProductReviewSerializer(serializers.ModelSerializer):
     def get_review_user_id(self,obj):
         return "#"+str(obj.review_user_id.id)+" "+obj.review_user_id.username
 
+@createParsedCreatedAtUpdatedAt
 class ProductQuestionSerializer(serializers.ModelSerializer):
     question_user_id=serializers.SerializerMethodField()
     answer_user_id=serializers.SerializerMethodField()
@@ -29,7 +31,7 @@ class ProductQuestionSerializer(serializers.ModelSerializer):
     
     def get_answer_user_id(self,obj):
         return "#"+str(obj.answer_user_id.id)+" "+obj.answer_user_id.username
-
+@createParsedCreatedAtUpdatedAt
 class ProductSerializer(serializers.ModelSerializer):
     category_id=serializers.SerializerMethodField()
     domain_user_id=serializers.SerializerMethodField()

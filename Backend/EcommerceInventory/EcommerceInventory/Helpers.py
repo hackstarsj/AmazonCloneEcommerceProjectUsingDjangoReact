@@ -7,6 +7,7 @@ from django.forms.models import model_to_dict
 from functools import wraps
 from django.db.models import Q
 from django.db import models
+from rest_framework import serializers
 
 def getDynamicFormModels():
     return {
@@ -14,6 +15,7 @@ def getDynamicFormModels():
         'category':'ProductServices.Categories',
         'warehouse':'InventoryServices.Warehouse',
         'supplier':'UserServices.Users',
+        'rackShelfFloor':'InventoryServices.RackAndShelvesAndFloor',
     }
 
 def getSuperAdminDynamicFormModels():
@@ -160,3 +162,29 @@ class CommonListAPIMixin:
                 return renderResponse(data={'data':data,'totalPages':total_pages,'currentPage':current_page,'pageSize':page_size,'totalItems':total_items},message='Data Retrieved Successfully',status=200)
             return wrapped_list_method
         return decorator
+
+
+def createParsedCreatedAtUpdatedAt(cls):
+    cls.formatted_created_at=serializers.SerializerMethodField()
+    cls.formatted_updated_at=serializers.SerializerMethodField()
+
+    def get_formatted_created_at(self,obj):
+        return obj.created_at.strftime('%dth %B %Y, %H:%M')
+    
+    def get_formatted_updated_at(self,obj):
+        return obj.created_at.strftime('%dth %B %Y, %H:%M')
+    
+    cls.get_formatted_created_at=get_formatted_created_at
+    cls.get_formatted_updated_at=get_formatted_updated_at
+
+    original_to_representation=cls.to_representation
+
+    @wraps(original_to_representation)
+    def to_representation(self,obj):
+        representation=original_to_representation(self,obj)
+        representation['created_at']=self.get_formatted_created_at(obj)
+        representation['updated_at']=self.get_formatted_updated_at(obj)
+        return representation
+    
+    cls.to_representation=to_representation
+    return cls

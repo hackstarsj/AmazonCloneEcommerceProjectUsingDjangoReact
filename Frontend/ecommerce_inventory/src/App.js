@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import './style/style.css';
 import ManageCategories from './pages/category/ManageCategories';
 import ManageProducts from './pages/products/ManageProducts';
+import Error404Page from './pages/Error404Page';
+import ManageWarhouse from './pages/warehouse/ManageWarehouse';
 
 function App() {
   const {status,error,items}=useSelector(state=>state.sidebardata);
@@ -32,12 +34,14 @@ function App() {
       {
         path:"/",
         element:<Layout sidebarList={items}/>,
+        errorElement:<Layout sidebarList={items} childPage={<Error404Page/>}/>,
         children:[
           {path:"/",element:<ProtectedRoute element={<Home/>}/>},
           {path:"/home",element:<ProtectedRoute element={<Home/>}/>},
           {path:"/form/:formName/:id?",element:<ProtectedRoute element={<DynamicForm/>}/>},
           {path:"/manage/category",element:<ProtectedRoute element={<ManageCategories/>}/>},
-          {path:"/manage/product",element:<ProtectedRoute element={<ManageProducts/>}/>}
+          {path:"/manage/product",element:<ProtectedRoute element={<ManageProducts/>}/>},
+          {path:"/manage/warehouse",element:<ProtectedRoute element={<ManageWarhouse/>}/>}
         ]},
     ]
   )
