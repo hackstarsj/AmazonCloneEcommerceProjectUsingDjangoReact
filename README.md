@@ -2,6 +2,11 @@
 
 Welcome to the Amazon Clone Project! This project is based on a tutorial series by the SuperCoders YouTube channel. The series walks through creating a fully functional Amazon clone using Django and React, complete with an inventory management system.
 
+## Support 
+- You love our open source project? We love you too! Your sponsorship helps us dedicate more time to development, improvements, and community support.
+
+- Show your appreciation for our open source project. Your sponsorship directly impacts our ability to innovate and grow.
+
 ## ER Diagram
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/ER_Diagram.png" alt="Amazon Clone Project ER Diagram" style="width: 100%;"/>
 
