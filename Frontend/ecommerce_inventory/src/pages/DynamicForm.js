@@ -38,10 +38,15 @@ const DynamicForm=({formNameVar,idVar,onSaveEvent})=>{
     const fetchForm=async()=>{
         const PID=id?`${id}/`:'';
         const response=await callApi({url:`getForm/${formName}/${PID}`});
-        let stepFilter=stepItems.filter(step=>response.data.data[step.fieldType] && response.data.data[step.fieldType].length>0);
-        setSteps(stepFilter);
-        setFormConfig(response.data);
-        setCurrentStep(0);
+        if(response?.data){
+            let stepFilter=stepItems.filter(step=>response.data.data[step.fieldType] && response.data.data[step.fieldType].length>0);
+            setSteps(stepFilter);
+            setFormConfig(response.data);
+            setCurrentStep(0);    
+        }
+        else{
+            toast.error('Error in Fetching Form Data');
+        }
     }
 
     const goToStep=(index)=>{
@@ -123,14 +128,15 @@ const DynamicForm=({formNameVar,idVar,onSaveEvent})=>{
             {/* Section for Form */}
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    {formConfig ?
+                    {formConfig  &&
                     <>
                         {steps.map((step,index)=>(
                             <Box component={"div"} sx={{display:index===currentStep?"block":"none"}}>
                                 {step.component && <step.component formConfig={formConfig} fieldType={step.fieldType}/>}
                             </Box>
                         ))}
-                    </>  : <LinearProgress/>}
+                    </>  }
+                   {!formConfig && loading && <LinearProgress/>}
             <Box mt={2} display="flex" justifyContent="space-between">
             {currentStep>0 && (<Button type='button' variant="contained" color="primary" onClick={()=>goToStep(currentStep-1)}><ArrowBackIosIcon sx={{fontSize:'18px',marginRight:'5px'}}/> Back</Button>)}
             {currentStep<steps.length-1 && <Button type='button' variant="contained" color="primary" onClick={()=>nextStep()}> Next <ArrowForwardIosIcon sx={{fontSize:'18px',marginLeft:'5px'}}/></Button>}

@@ -16,6 +16,7 @@ def getDynamicFormModels():
         'warehouse':'InventoryServices.Warehouse',
         'supplier':'UserServices.Users',
         'rackShelfFloor':'InventoryServices.RackAndShelvesAndFloor',
+        'users':'UserServices.Users',
     }
 
 def getSuperAdminDynamicFormModels():
@@ -24,10 +25,10 @@ def getSuperAdminDynamicFormModels():
     }
 
 def checkisFileField(field):
-    return field in ['image','file','path','video','audio']
+    return field in ['image','file','path','video','audio','profile_pic']
 
 def getExludeFields():
-    return ['id','created_at','updated_at','domain_user_id','added_by_user_id','created_by_user_id','updated_by_user_id']
+    return ['id','created_at','updated_at','domain_user_id','added_by_user_id','created_by_user_id','updated_by_user_id','is_staff','is_superuser','is_active','plan_type','last_login','last_device','date_joined','last_ip','domain_name']
 
 def getDynamicFormFields(model_instance,domain_user_id):
     fields={'text':[],'select':[],'checkbox':[],'radio':[],'textarea':[],'json':[],'file':[]}
@@ -160,6 +161,67 @@ class CommonListAPIMixin:
                     total_items=len(data)
 
                 return renderResponse(data={'data':data,'totalPages':total_pages,'currentPage':current_page,'pageSize':page_size,'totalItems':total_items},message='Data Retrieved Successfully',status=200)
+            return wrapped_list_method
+        return decorator
+
+
+class CommonListAPIMixinWithFilter:
+    serializer_class=None
+    pagination_class=CustomPageNumberPagination
+
+    def get_queryset(self):
+        raise NotImplementedError('get_queryset method not implemented')
+    
+    def common_list_decorator(serializer_class):
+        def decorator(list_method):
+            @wraps(list_method)
+            def wrapped_list_method(self,request,*args,**kwargs):
+                queryset=self.get_queryset()
+                search_query=self.request.query_params.get('search',None)
+
+                filtered_params=self.request.query_params.dict()
+                key_to_remove=['search','ordering','pageSize','page']
+                for key in key_to_remove:
+                    if key in filtered_params:
+                        filtered_params.pop(key,None)
+                
+                if filtered_params:
+                    search_conditions=Q()
+                    for key,value in filtered_params.items():
+                        search_conditions|=Q(**{f"{key}":value})
+                    queryset=queryset.filter(search_conditions)
+
+                if search_query:
+                    search_conditions=Q()
+
+                    for field in serializer_class.Meta.model._meta.get_fields():
+                        if isinstance(field,(models.CharField,models.TextField)):
+                            search_conditions|=Q(**{f"{field.name}__icontains":search_query})
+                    queryset=queryset.filter(search_conditions)
+
+                ordering=self.request.query_params.get('ordering',None)
+
+                if ordering:
+                    queryset=queryset.order_by(ordering)
+
+                page=self.paginate_queryset(queryset)
+
+                if page is not None:
+                    serializer=self.get_serializer(page,many=True)
+                    data=serializer.data
+                    total_pages=self.paginator.page.paginator.num_pages
+                    current_page=self.paginator.page.number
+                    page_size=self.paginator.page.paginator.per_page
+                    total_items=self.paginator.page.paginator.count
+                else:
+                    serializer=self.get_serializer(queryset,many=True)
+                    data=serializer.data
+                    total_pages=1
+                    current_page=1
+                    page_size=len(data)
+                    total_items=len(data)
+                filterFields=[{"key":field.name,"option":[{"id":choice[0],'value':choice[1]} for choice in field.choices] if field.choices else None } for field in serializer_class.Meta.model._meta.fields if field.name in serializer_class.Meta.fields]
+                return renderResponse(data={'filterFields':filterFields,'data':data,'totalPages':total_pages,'currentPage':current_page,'pageSize':page_size,'totalItems':total_items},message='Data Retrieved Successfully',status=200)
             return wrapped_list_method
         return decorator
 

@@ -11,6 +11,7 @@ const StepTextAreaComponents = ({formConfig,fieldType}) => {
                 fullWidth
                 margin="normal"
                 key={field.name}
+                required={field.required}
                 error={!!errors[field.name]}
                 label={field.label}
                 {...register(field.name,{required:field.required})}

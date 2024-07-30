@@ -113,6 +113,10 @@ export const getFormTypes=()=>{
     ]
 }
 
+export const formatText=(key)=>{
+    return key.charAt(0).toUpperCase()+key.slice(1).replaceAll("_"," ")
+}
+
 
 export const getFileNameFromUrl=(url)=>{
     const parseUrl=new URL(url);
