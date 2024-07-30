@@ -230,7 +230,7 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/37.png" alt="Amazon Clone Project Complete Manage Supplier/Admin/Customer/Staff" style="width: 100%;"/>
 
-<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/37.png" alt="Amazon Clone Project Complete Manage Supplier/Admin/Customer/Staff" style="width: 100%;"/>
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/38.png" alt="Amazon Clone Project Complete Manage Supplier/Admin/Customer/Staff" style="width: 100%;"/>
 
 ## Commits
 # Commit Tree
