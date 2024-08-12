@@ -7,12 +7,15 @@ import { GlobalStyles } from '../layout/GlobalStyle';
 import { useNavigate } from 'react-router-dom';
 import useApi from '../hooks/APIHandler';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/reducer/IsLoggedInReducer';
 
 const Auth = () => {
   const [tab, setTab] = useState(0);
   const [themeMode, setThemeMode] = useState('basic');
   const navigate=useNavigate();
   const {callApi,error,loading}=useApi();
+  const dispatch=useDispatch();
   
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'basic';
@@ -68,6 +71,7 @@ const Auth = () => {
     if(response?.data?.access){
         localStorage.setItem("token",response.data.access);
         toast.success("Signup Successfully");
+        dispatch(login());
         navigate("/home");
     }
     else{
@@ -83,7 +87,9 @@ const doLogin = async(e) => {
     if(response?.data?.access){
       localStorage.setItem("token",response.data.access);
           toast.success("Login Successfully");
+          dispatch(login());
           navigate("/home");
+
     }
     else{
           toast.error("Invalid Credentials");

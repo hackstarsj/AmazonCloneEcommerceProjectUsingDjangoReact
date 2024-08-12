@@ -14,6 +14,7 @@ import { AddCircle, Circle, Close, PanoramaRounded, SaveAltRounded, SecurityOutl
 import Image from "../../components/Image";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import FileInputComponent from "../../components/FileInputComponents";
+import ManageUserPermission from "./ManageUserPermission";
 
 const ManageUsers = () => {
     const [data,setData]=useState([]);
@@ -37,6 +38,8 @@ const ManageUsers = () => {
     const [jsonData,setJsonData]=useState([]);
     const [open,setOpen]=useState(false);
     const [modalTitle,setModalTitle]=useState('');
+    const [openPermission,setOpenPermission]=useState(false);
+    const [openPermissionUserId,setOpenPermissionUserId]=useState(null);
   
     const divImage=useRef();
     const navigate=useNavigate();
@@ -109,7 +112,7 @@ const ManageUsers = () => {
                     <IconButton onClick={()=>navigate(`/form/users/${params.row.id}`)}>
                         <Edit color="primary" />
                     </IconButton>
-                    <IconButton onClick={()=>{}}><SecurityOutlined color="primary"/></IconButton>
+                    <IconButton onClick={()=>{ setOpenPermissionUserId(params.row.id); setOpenPermission(true); }}><SecurityOutlined color="primary"/></IconButton>
                 </>
                 }
             }];
@@ -338,6 +341,11 @@ const ManageUsers = () => {
                                     </React.Fragment>
                                 ))
                              }
+                        </DialogContent>
+                </Dialog>
+                <Dialog open={openPermission} fullWidth={true} maxWidth={"lg"} onClose={()=>setOpenPermission(false)} aria-labelledby="form-dialog-title">
+                        <DialogContent>
+                            <ManageUserPermission id={openPermissionUserId}/>
                         </DialogContent>
                 </Dialog>
         </Box>

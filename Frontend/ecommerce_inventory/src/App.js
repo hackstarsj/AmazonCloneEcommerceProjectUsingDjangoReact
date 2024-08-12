@@ -18,9 +18,11 @@ import ManageProducts from './pages/products/ManageProducts';
 import Error404Page from './pages/Error404Page';
 import ManageWarhouse from './pages/warehouse/ManageWarehouse';
 import ManageUsers from './pages/users/ManageUsers';
+import ManageModuleUrls from './pages/module/ManageModuleUrls';
 
 function App() {
   const {status,error,items}=useSelector(state=>state.sidebardata);
+  const {isLoggedIn}=useSelector(state=>state.isLoggedInReducer);
   const dispatch=useDispatch();
   
   useEffect(()=>{
@@ -29,6 +31,11 @@ function App() {
     }
   },[status,dispatch])
   
+  useEffect(()=>{
+    if(isLoggedIn){
+      dispatch(fetchSidebar());
+    }
+  },[isLoggedIn])
   const router=createBrowserRouter(
     [
       {path:"/auth",element:<Auth/>},
@@ -43,7 +50,8 @@ function App() {
           {path:"/manage/category",element:<ProtectedRoute element={<ManageCategories/>}/>},
           {path:"/manage/product",element:<ProtectedRoute element={<ManageProducts/>}/>},
           {path:"/manage/warehouse",element:<ProtectedRoute element={<ManageWarhouse/>}/>},
-          {path:"/manage/users",element:<ProtectedRoute element={<ManageUsers/>}/>}
+          {path:"/manage/users",element:<ProtectedRoute element={<ManageUsers/>}/>},
+          {path:"/manage/moduleurls",element:<ProtectedRoute element={<ManageModuleUrls/>}/>}
         ]},
     ]
   )

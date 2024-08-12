@@ -21,7 +21,7 @@ from EcommerceInventory.views import index,FileUploadViewInS3
 from EcommerceInventory import settings
 from UserServices.Controller.DynamicFormController import DynamicFormController
 from UserServices.Controller.SuperAdminDynamicFormController import SuperAdminDynamicFormController
-from UserServices.Controller.SidebarController import ModuleView
+from UserServices.Controller.SidebarController import ModuleUrlsListAPIView, ModuleView
 from django.conf.urls.static import static
 
 
@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/getForm/<str:modelName>/',DynamicFormController.as_view(),name='dynamicForm'),
     path('api/getForm/<str:modelName>/<str:id>/',DynamicFormController.as_view(),name='dynamicForm'),
     path('api/superAdminForm/<str:modelName>/',SuperAdminDynamicFormController.as_view(),name='superadmindynamicForm'),
+    path('api/moduleUrls/',ModuleUrlsListAPIView.as_view(),name='moduleUrls_superadmin'),
     path('api/getMenus/',ModuleView.as_view(),name='sidebarmenu'),
     path('api/products/',include('ProductServices.urls')),
     path('api/inventory/',include('InventoryServices.urls')),

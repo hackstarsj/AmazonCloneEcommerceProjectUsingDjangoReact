@@ -1,5 +1,5 @@
-from EcommerceInventory.Helpers import CommonListAPIMixin, CommonListAPIMixinWithFilter, CustomPageNumberPagination, createParsedCreatedAtUpdatedAt, renderResponse
-from UserServices.models import Users
+from EcommerceInventory.Helpers import CommonListAPIMixin, CommonListAPIMixinWithFilter, CustomPageNumberPagination, createParsedCreatedAtUpdatedAt, executeQuery, renderResponse
+from UserServices.models import Modules, UserPermissions, Users
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -60,3 +60,64 @@ class UpdateUsers(generics.UpdateAPIView):
 
     def perform_update(self,serializer):
         serializer.save()
+
+
+class UserPermissionsView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    def get(self,request,pk):
+        query='''
+            SELECT 
+                userservices_modules.module_name, 
+                userservices_modules.id as module_id, 
+                userservices_modules.parent_id_id, 
+                COALESCE(userservices_userpermissions.is_permission,0) as is_permission,
+                userservices_userpermissions.user_id, 
+                userservices_userpermissions.domain_user_id_id 
+                FROM
+                    `userservices_modules` 
+                    left join 
+                        userservices_userpermissions
+                    on 
+                    userservices_userpermissions.module_id=userservices_modules.id and 
+            userservices_userpermissions.user_id=%s;
+        '''
+
+        permissions=executeQuery(query,[pk])
+
+        permissionList={}
+        for permission in permissions:
+            if permission['parent_id_id']==None:
+                permission['children']=[]
+                permissionList[permission['module_id']]=permission
+            
+        for permission in permissions:
+            if permission['parent_id_id']!=None:
+                permissionList[permission['parent_id_id']]['children'].append(permission)
+
+        permissionList=permissionList.values()
+        return renderResponse(data=permissionList,message="User Permissions",status=200)
+
+    def post(self,request,pk):
+        data=request.data
+        for item in data:
+            if 'id' in item and item['id']!=None:
+                permission=UserPermissions.objects.get(id=item['id'])
+                permission.is_permission=item['is_permission']
+            else:
+                module=Modules.objects.get(id=item['module_id'])
+                permission=UserPermissions(module=module,user_id=pk,is_permission=item['is_permission'])
+
+            permission.save()
+
+            if 'children' in item:
+                for child in item['children']:
+                    if 'id' in child and child['id']!=None:
+                        permission=UserPermissions.objects.get(id=child['id'])
+                        permission.is_permission=child['is_permission']
+                    else:
+                        module=Modules.objects.get(id=child['module_id'])
+                        permission=UserPermissions(module=module,user_id=pk,is_permission=child['is_permission'])
+
+                        permission.save()
+        return renderResponse(data=[],message="Permissions Updated",status=200)

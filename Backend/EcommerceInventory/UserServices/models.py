@@ -75,11 +75,15 @@ class UserPermissions(models.Model):
     id=models.AutoField(primary_key=True)
     user=models.ForeignKey(Users,on_delete=models.CASCADE,related_name='user_permissions_1')
     module=models.ForeignKey(Modules,on_delete=models.CASCADE)
-    is_view=models.BooleanField(default=False)
-    is_add=models.BooleanField(default=False)
-    is_edit=models.BooleanField(default=False)
-    is_delete=models.BooleanField(default=False)
+    is_permission=models.BooleanField(default=False)
     domain_user_id=models.ForeignKey(Users,on_delete=models.CASCADE,blank=True,null=True,related_name='domain_user_id_user_permissions')
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now=True)
+
+class ModuleUrls(models.Model):
+    id=models.AutoField(primary_key=True)
+    module=models.ForeignKey(Modules,on_delete=models.CASCADE,blank=True,null=True)
+    url=models.CharField(max_length=255)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 

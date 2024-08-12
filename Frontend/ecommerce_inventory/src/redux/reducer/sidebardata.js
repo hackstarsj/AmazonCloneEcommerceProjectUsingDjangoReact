@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from '../../utils/config';
 
 export const fetchSidebar=createAsyncThunk('data/fetchSidebar',async()=>{
-    const response=await axios.get(`${config.API_URL}getMenus/`);
+    const response=await axios.get(`${config.API_URL}getMenus/`,{headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}});
     const sidebarData=response.data.data;
     const setActiveAndExpanded=(item)=>{
         if(item.module_url && window.location.pathname.indexOf(item.module_url)!==-1){
@@ -44,7 +44,7 @@ const sidebarSlice=createSlice({
             state.items.forEach(item=>{
                 item.active=false;
                 item.expanded=false;
-                item.submenus.forEach(submenu=>{
+                item.submenus?.forEach(submenu=>{
                     submenu.active=false;
                     if(submenu.id===action.payload.item.id){
                         submenu.active=true;
@@ -69,6 +69,11 @@ const sidebarSlice=createSlice({
                         item.expanded=true;
                     }
                 });
+
+                if(item.module_url && window.location.pathname.indexOf(item.module_url)!==-1 && item.submenus.length===0){
+                    item.active=true;
+                    item.expanded=true;
+                }
             });
         }
     },
