@@ -232,5 +232,19 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/38.png" alt="Amazon Clone Project Complete Manage Supplier/Admin/Customer/Staff" style="width: 100%;"/>
 
+## Added Complete User Permissions and Assign Permission to User and Module Urls Manage
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/39.png" alt="User Access Level and Module Urls Permission" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/40.png" alt="User Access Level and Module Urls Permission" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/41.png" alt="User Access Level and Module Urls Permission" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/42.png" alt="User Access Level and Module Urls Permission" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/43.png" alt="User Access Level and Module Urls Permission" style="width: 100%;"/>
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/44.png" alt="User Access Level and Module Urls Permission" style="width: 100%;"/>
+
 ## Commits
 # Commit Tree
