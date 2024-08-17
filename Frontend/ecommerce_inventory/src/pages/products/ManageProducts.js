@@ -16,7 +16,7 @@ import Image from "../../components/Image";
 import ManageReviews from "./ManageReview";
 import ManageQuestions from "./ManageQuestions";
 
-const ManageProducts = () => {
+const ManageProducts = ({onProductSelected}) => {
     const [data,setData]=useState([]);
     const [columns,setColumns]=useState([]);
     const [paginationModel,setPaginationModel]=useState({
@@ -87,6 +87,10 @@ const ManageProducts = () => {
     }
     const onAddClick=(params)=>{
         console.log(params);
+        if(onProductSelected){
+            onProductSelected(params.row);
+            return;
+        }
         navigate('/form/product')
     }
 
@@ -166,10 +170,11 @@ const ManageProducts = () => {
 
     return (
         <Box component={"div"} sx={{width:'100%'}}>
+            {!onProductSelected &&
             <Breadcrumbs>
                 <Typography variant="body2" onClick={()=>navigate('/')}>Home</Typography>
                 <Typography variant="body2" onClick={()=>navigate('/manage/product')}>Manage Products</Typography>
-            </Breadcrumbs>
+            </Breadcrumbs>}
             <Grid container spacing={2}>
             <Grid item xs={12} sm={showImages?8:12} lg={showImages?9:12}>
             <TextField label="Search" variant="outlined" fullWidth onChange={(e)=>setSearchQuery(e.target.value)} margin="normal"/>

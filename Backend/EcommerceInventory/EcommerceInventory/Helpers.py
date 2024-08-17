@@ -33,10 +33,10 @@ def checkisFileField(field):
 def getExludeFields():
     return ['id','created_at','updated_at','domain_user_id','added_by_user_id','created_by_user_id','updated_by_user_id','is_staff','is_superuser','is_active','plan_type','last_login','last_device','date_joined','last_ip','domain_name']
 
-def getDynamicFormFields(model_instance,domain_user_id):
+def getDynamicFormFields(model_instance,domain_user_id,skip_related=[],skip_fields=[]):
     fields={'text':[],'select':[],'checkbox':[],'radio':[],'textarea':[],'json':[],'file':[]}
     for field in model_instance._meta.fields:
-        if field.name in getExludeFields():
+        if field.name in getExludeFields() or field.name in skip_fields:
             continue
 
         label=field.name.replace('_',' ').title()
@@ -60,9 +60,19 @@ def getDynamicFormFields(model_instance,domain_user_id):
             fielddata['type']='text'
         elif field.get_internal_type()=='BooleanField' or field.get_internal_type()=='NullBooleanField':
             fielddata['type']='checkbox'
+        elif field.get_internal_type()=='DateField': 
+            fielddata['type']='text'
+            fielddata['isDate']=True
+        elif field.get_internal_type()=='DateTimeField':
+            fielddata['type']='text'
+            fielddata['isDateTime']=True
         else:
             fielddata['type']='text'
             if isinstance(field,ForeignKey):
+                if field.name in skip_related:
+                    fields['text'].append(fielddata)
+                    continue
+
                 related_model=field.related_model
                 related_key=field.name
                 related_key_name=''

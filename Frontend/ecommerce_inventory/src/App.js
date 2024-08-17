@@ -19,6 +19,7 @@ import Error404Page from './pages/Error404Page';
 import ManageWarhouse from './pages/warehouse/ManageWarehouse';
 import ManageUsers from './pages/users/ManageUsers';
 import ManageModuleUrls from './pages/module/ManageModuleUrls';
+import CreatePurchaseOrder from './pages/purchaseorder/CreatePurchaseOrder';
 
 function App() {
   const {status,error,items}=useSelector(state=>state.sidebardata);
@@ -51,7 +52,8 @@ function App() {
           {path:"/manage/product",element:<ProtectedRoute element={<ManageProducts/>}/>},
           {path:"/manage/warehouse",element:<ProtectedRoute element={<ManageWarhouse/>}/>},
           {path:"/manage/users",element:<ProtectedRoute element={<ManageUsers/>}/>},
-          {path:"/manage/moduleurls",element:<ProtectedRoute element={<ManageModuleUrls/>}/>}
+          {path:"/manage/moduleurls",element:<ProtectedRoute element={<ManageModuleUrls/>}/>},
+          {path:"/create/po",element:<ProtectedRoute element={<CreatePurchaseOrder/>}/>}
         ]},
     ]
   )

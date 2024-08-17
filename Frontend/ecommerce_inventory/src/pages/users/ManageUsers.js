@@ -16,7 +16,7 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import FileInputComponent from "../../components/FileInputComponents";
 import ManageUserPermission from "./ManageUserPermission";
 
-const ManageUsers = () => {
+const ManageUsers = ({onSupplierSelect}) => {
     const [data,setData]=useState([]);
     const [columns,setColumns]=useState([]);
     const [paginationModel,setPaginationModel]=useState({
@@ -33,7 +33,7 @@ const ManageUsers = () => {
     const [filterFields,setFilterFields]=useState([]);
     const [userList,setUserList]=useState([]);
     const [showAdvanceSearch,setShowAdvanceSearch]=useState(false);
-    const [aFilterFields,setAFilterFields]=useState({});
+    const [aFilterFields,setAFilterFields]=useState(onSupplierSelect?{'role':'Supplier'}:{});
     const {error,loading,callApi}=useApi();  
     const [jsonData,setJsonData]=useState([]);
     const [open,setOpen]=useState(false);
@@ -106,9 +106,11 @@ const ManageUsers = () => {
             const columns=[{
                 field:'Action',
                 headerName:'Action',
-                width:100,
+                width:onSupplierSelect?150:100,
                 renderCell:(params)=>{
                     return <>
+                    {onSupplierSelect &&
+                    <IconButton onClick={()=>onSupplierSelect(params.row)}><Add/></IconButton>}
                     <IconButton onClick={()=>navigate(`/form/users/${params.row.id}`)}>
                         <Edit color="primary" />
                     </IconButton>
@@ -177,13 +179,14 @@ const ManageUsers = () => {
 
     return (
         <Box component={"div"} sx={{width:'100%'}}>
+            {!onSupplierSelect &&
             <Box display={"flex"} justifyContent={"space-between"}>
                 <Breadcrumbs>
                     <Typography variant="body2" onClick={()=>navigate('/')}>Home</Typography>
                     <Typography variant="body2" onClick={()=>navigate('/manage/users')}>Manage (Customer/Supplier/Admin/Staff)</Typography>
                 </Breadcrumbs>
                 <Button startIcon={<AddCircle/>} variant="contained" onClick={()=>{ navigate('/form/users') }}>Add Users</Button>
-            </Box>
+            </Box>}
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={(showImages || showAddReviews)?8:12} lg={(showImages || showAddReviews)?9:12}>
             <Grid container spacing={2}>

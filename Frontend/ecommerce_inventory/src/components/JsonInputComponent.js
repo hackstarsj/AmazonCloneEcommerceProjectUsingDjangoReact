@@ -7,7 +7,7 @@ import { Button, IconButton } from '@mui/material';
 
 const JsonInputComponent =({fields})=>{
     const {register} = useFormContext();
-    const [keyValuePairs,setKeyValuePairs]=useState([{key:'',value:''}]);
+    const [keyValuePairs,setKeyValuePairs]=useState([]);
     const handleKeyValueRemove=(index)=>{
         const newPairs=keyValuePairs.filter((_,i)=>i!==index);
         setKeyValuePairs(newPairs);
@@ -16,6 +16,9 @@ const JsonInputComponent =({fields})=>{
     useEffect(()=>{
         if(fields.default){
             setKeyValuePairs([...keyValuePairs,...fields.default]);
+        }
+        else{
+            setKeyValuePairs([{key:'',value:''}])
         }
     },[])
 
@@ -32,6 +35,7 @@ const JsonInputComponent =({fields})=>{
                         <TextField
                         fullWidth
                         margin="normal"
+                        sx={{ml:1,mr:1}}
                         key={fields.name}
                         label="Key"
                         {...register(`${fields.name}[${index}].key`)}
@@ -41,6 +45,7 @@ const JsonInputComponent =({fields})=>{
                         <TextField
                         fullWidth
                         margin="normal"
+                        sx={{ml:1,mr:1}}
                         key={fields.name}
                         label="Value"
                         {...register(`${fields.name}[${index}].value`)}

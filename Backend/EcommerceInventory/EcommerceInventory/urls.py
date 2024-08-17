@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/getMenus/',ModuleView.as_view(),name='sidebarmenu'),
     path('api/products/',include('ProductServices.urls')),
     path('api/inventory/',include('InventoryServices.urls')),
+    path('api/orders/',include('OrderService.urls')),
     path('api/uploads/',FileUploadViewInS3.as_view(),name='fileupload')
 ]
 

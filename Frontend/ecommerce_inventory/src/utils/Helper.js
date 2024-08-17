@@ -118,6 +118,11 @@ export const formatText=(key)=>{
 }
 
 
+export const getFormType=()=>{
+    return ['select','text','checkbox','textarea','json','file'];
+}
+
+
 export const getFileNameFromUrl=(url)=>{
     const parseUrl=new URL(url);
     const pathname=parseUrl.pathname;
