@@ -246,5 +246,9 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/44.png" alt="User Access Level and Module Urls Permission" style="width: 100%;"/>
 
+## Added Create Purchase Order
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/45.png" alt="Create Purchase Order" style="width: 100%;"/>
+
 ## Commits
 # Commit Tree
