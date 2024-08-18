@@ -7,6 +7,9 @@ Welcome to the Amazon Clone Project! This project is based on a tutorial series 
 
 - Show your appreciation for our open source project. Your sponsorship directly impacts our ability to innovate and grow.
 
+## Complete Project Flow 
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/Ecommerce.gif" alt="Amazon Clone Ecommerce Flow" style="width: 100%;"/>
+
 ## ER Diagram
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/ER_Diagram.png" alt="Amazon Clone Project ER Diagram" style="width: 100%;"/>
 
