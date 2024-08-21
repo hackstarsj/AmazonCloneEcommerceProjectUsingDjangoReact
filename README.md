@@ -253,5 +253,9 @@ Enjoy building your Amazon clone! If you have any questions or run into issues, 
 
 <img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/45.png" alt="Create Purchase Order" style="width: 100%;"/>
 
+## Added Manage Purchase Order and Edit Draft PO Order
+
+<img src="https://raw.githubusercontent.com/hackstarsj/AmazonCloneEcommerceProjectUsingDjangoReact/master/screenshots/46.png" alt="Create Purchase Order" style="width: 100%;"/>
+
 ## Commits
 # Commit Tree
