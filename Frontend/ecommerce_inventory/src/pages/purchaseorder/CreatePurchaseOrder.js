@@ -27,9 +27,11 @@ import ManageProducts from "../products/ManageProducts";
 import { Add, CheckCircle, Close, Delete, Save } from "@mui/icons-material";
 import JsonInputComponent from "../../components/JsonInputComponent";
 import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CreatePurchaseOrder = () => {
   const { error, loading, callApi } = useApi();
+  const {id}=useParams();
   const [poFields, setPoFields] = useState([]);
   const [poItemFields, setPoItemFields] = useState([]);
   const [fieldType, setFieldType] = useState(getFormType());
@@ -37,17 +39,22 @@ const CreatePurchaseOrder = () => {
   const [supplierId, setSupplierId] = useState("");
   const [openSelectSupplier, setOpenSelectSupplier] = useState(false);
   const [openSelectProduct, setOpenSelectProduct] = useState(false);
-  const [poItems, setPoItems] = useState([]);
   const [openAddAdditionalDetails,setOpenAddAdditionalDetails]=useState(false);
   const [selectedPoItemIndex,setSelectedPoItemIndex]=useState(null)
   const methods = useForm();
+  const navigate=useNavigate();
 
 
   const getFormFields = async () => {
-    const response = await callApi({ url: "orders/purchaseOrder/" });
+    const idVar= id ? id+"/" : '';
+    const response = await callApi({ url: `orders/purchaseOrder/${idVar}` });
     if (response && response.status === 200) {
       setPoFields(response.data.data.poFields);
       setPoItemFields(response.data.data.poItemFields);
+      setSupplierEmail(response.data.data?.poData?.supplier_email);
+      setSupplierId(response.data.data?.poData?.supplier_id);
+      methods.setValue('supplier_id',response.data.data?.poData?.supplier_id);
+      methods.setValue('items',response.data.data?.poItems);
     }
   };
 
@@ -56,18 +63,16 @@ const CreatePurchaseOrder = () => {
   }, []);
 
   const deleteItem=(index)=>{
-    const newItems=poItems.filter((item,i)=>i!==index);
     let items=methods.watch('items');
     items=items.filter((item,i)=>i!==index);
     methods.setValue('items',items);
-    setPoItems(newItems);
   }
 
   const getPoItems = () => {
-    return poItems.map((item, index) => (
+    return methods?.watch('items')?.map((item, index) => (
       <TableRow>
         <TableCell><IconButton onClick={()=>deleteItem(index)}><Delete color="error"/></IconButton></TableCell>
-        <TableCell>{item.sku}</TableCell>
+        <TableCell>{item && 'sku' in item?item?.sku:''}</TableCell>
         {fieldType.map((fieldT, index2) =>
           poItemFields?.[fieldT].map((field, index3) => {
             let tempField = { ...field };
@@ -98,12 +103,12 @@ const CreatePurchaseOrder = () => {
   };
 
   const onProductSelected = (data) => {
-    if(poItems.filter((item)=>item.product_id===data.id).length>0){
+    if(methods?.watch('items')?.filter((item)=>item.product_id===data.id).length>0){
         toast.error("Product Already Added")
         return;
     }
-    setPoItems([
-      ...poItems,
+    methods?.setValue('items',[
+      ...methods?.watch('items'),
       {
         sku:data.sku,
         product_id: data.id,
@@ -125,13 +130,16 @@ const CreatePurchaseOrder = () => {
         toast.error("Please Select Atleast 1 Product")
         return;
     }
-    const response = await callApi({ url: "orders/purchaseOrder/",method:'POST',body:data});
+    const idVar= id ? id+"/" : '';
+    const response = await callApi({ url: `orders/purchaseOrder/${idVar}`,method:'POST',body:data});
     if(response?.status===201){
-        setPoItems([])
         setSupplierEmail('')
         setSupplierId('')
         methods.reset();
         toast.success(response.data.message);
+        if(id){
+          navigate('/manage/purchaseorder')
+        }
     }
   }
 
@@ -164,7 +172,7 @@ const CreatePurchaseOrder = () => {
               poFields?.[field]?.map((field1, index1) =>
                 field1.name === "supplier_id" ? (
                   <Grid item xs={12} lg={3} md={4} sm={6}>
-                    {supplierEmail === "" ? (
+                    {supplierEmail === "" || !supplierEmail? (
                       <Button
                         type="button"
                         onClick={() => setOpenSelectSupplier(true)}

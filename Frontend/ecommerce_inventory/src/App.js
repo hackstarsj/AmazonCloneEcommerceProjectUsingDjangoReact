@@ -20,6 +20,7 @@ import ManageWarhouse from './pages/warehouse/ManageWarehouse';
 import ManageUsers from './pages/users/ManageUsers';
 import ManageModuleUrls from './pages/module/ManageModuleUrls';
 import CreatePurchaseOrder from './pages/purchaseorder/CreatePurchaseOrder';
+import ManagePurchaseOrder from './pages/purchaseorder/ManagePurchaseOrder';
 
 function App() {
   const {status,error,items}=useSelector(state=>state.sidebardata);
@@ -53,7 +54,9 @@ function App() {
           {path:"/manage/warehouse",element:<ProtectedRoute element={<ManageWarhouse/>}/>},
           {path:"/manage/users",element:<ProtectedRoute element={<ManageUsers/>}/>},
           {path:"/manage/moduleurls",element:<ProtectedRoute element={<ManageModuleUrls/>}/>},
-          {path:"/create/po",element:<ProtectedRoute element={<CreatePurchaseOrder/>}/>}
+          {path:"/create/po",element:<ProtectedRoute element={<CreatePurchaseOrder/>}/>},
+          {path:"/create/po/:id?",element:<ProtectedRoute element={<CreatePurchaseOrder/>}/>},
+          {path:"/manage/purchaseorder",element:<ProtectedRoute element={<ManagePurchaseOrder/>}/>}
         ]},
     ]
   )
