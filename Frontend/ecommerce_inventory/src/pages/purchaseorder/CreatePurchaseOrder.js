@@ -79,6 +79,7 @@ const CreatePurchaseOrder = () => {
             tempField["default"] = item[tempField?.name];
             tempField["name"] = `items[${index}].${tempField.name}`;
             return (
+              methods.watch('discount_type')!=='ITEM DISCOUNT' && (field.name==='discount_type' || field.name==='discount_amount')?<input type='hidden' name={tempField.name} {...methods.register(tempField.name)} value={field.name==='discount_type'?'NO DISCOUNT':0}/>:
               <TableCell>
                 {field.label === "Additional Details" ? (
                   <Button variant="contained" color="primary" onClick={()=>{
@@ -197,7 +198,9 @@ const CreatePurchaseOrder = () => {
                       </>
                     )}
                   </Grid>
-                ) : (
+                ) :(['NO DISCOUNT','ITEM DISCOUNT'].includes(methods.watch('discount_type')) && field1.name==='discount_amount')?
+                <input type='hidden' name={field1.name} {...methods.register(field1.name)} value={field1.name==='discount_type'?'NO DISCOUNT':0}/>
+              :  (
                   <Grid
                     item
                     xs={12}
@@ -233,7 +236,7 @@ const CreatePurchaseOrder = () => {
                   <TableCell>SKU</TableCell>
                   {fieldType.map((item, index) =>
                     poItemFields?.[item]?.map((field, index2) => (
-                      <TableCell key={field.name}>{field.label}</TableCell>
+                      methods.watch('discount_type')!=='ITEM DISCOUNT' && (field.name==='discount_type' || field.name==='discount_amount') ? null :<TableCell key={field.name}>{field.label}</TableCell>
                     ))
                   )}
                 </TableRow>

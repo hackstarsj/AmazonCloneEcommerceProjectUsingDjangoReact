@@ -37,7 +37,6 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         items_data=validated_data.pop('po_id_purchase_order_items')
         purchaseOrder=PurchaseOrder.objects.create(**validated_data)
         for item_data in items_data:
-            item_data.update({'created_by_user_id':validated_data.get('created_by_user_id')})
             item_data.update({'domain_user_id':validated_data.get('domain_user_id')})
             PurchaseOrderItems.objects.create(po_id=purchaseOrder,**item_data)
 
@@ -52,7 +51,6 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         PurchaseOrderItems.objects.filter(po_id=instance).exclude(id__in=items).delete()
 
         for item_data in items_data:
-            item_data.update({'created_by_user_id':validated_data.get('created_by_user_id')})
             item_data.update({'domain_user_id':validated_data.get('domain_user_id')})
 
             if 'po_id' in item_data:

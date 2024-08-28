@@ -17,10 +17,15 @@ const CommonInputComponent = ({ field,sx }) => {
      }
 
      if(field.type==='text' && 'isDateTime' in field){
-       const date=new Date(field.default);
-       const tzOffset=new Date().getTimezoneOffset()*60000;
-       const localtTime=new Date(date.getTime()-tzOffset).toISOString().slice(0,16);
-        setValue(field.name,localtTime);
+        if(field.default){
+          const date=new Date(field.default);
+          const tzOffset=new Date().getTimezoneOffset()*60000;
+          const localtTime=new Date(date.getTime()-tzOffset).toISOString().slice(0,16);
+          setValue(field.name,localtTime); 
+      }
+      else{
+          setValue(field.name,new Date().toISOString().slice(0,16));
+      }
      }
   }, []);
 
