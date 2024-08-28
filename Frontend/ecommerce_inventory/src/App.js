@@ -21,6 +21,7 @@ import ManageUsers from './pages/users/ManageUsers';
 import ManageModuleUrls from './pages/module/ManageModuleUrls';
 import CreatePurchaseOrder from './pages/purchaseorder/CreatePurchaseOrder';
 import ManagePurchaseOrder from './pages/purchaseorder/ManagePurchaseOrder';
+import PoDetails from './pages/purchaseorder/detail/PoDetails';
 
 function App() {
   const {status,error,items}=useSelector(state=>state.sidebardata);
@@ -56,7 +57,8 @@ function App() {
           {path:"/manage/moduleurls",element:<ProtectedRoute element={<ManageModuleUrls/>}/>},
           {path:"/create/po",element:<ProtectedRoute element={<CreatePurchaseOrder/>}/>},
           {path:"/create/po/:id?",element:<ProtectedRoute element={<CreatePurchaseOrder/>}/>},
-          {path:"/manage/purchaseorder",element:<ProtectedRoute element={<ManagePurchaseOrder/>}/>}
+          {path:"/manage/purchaseorder",element:<ProtectedRoute element={<ManagePurchaseOrder/>}/>},
+          {path:"/po/details/:id",element:<ProtectedRoute element={<PoDetails/>}/>}
         ]},
     ]
   )

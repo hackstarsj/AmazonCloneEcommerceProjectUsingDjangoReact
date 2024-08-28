@@ -30,6 +30,7 @@ class Products(models.Model):
     sku=models.CharField(max_length=255)
     initial_buying_price=models.FloatField()
     initial_selling_price=models.FloatField()
+    mrp=models.FloatField(default=0)
     weight=models.FloatField()
     dimensions=models.CharField(default='0x0x0',max_length=255)
     uom=models.CharField(max_length=255)

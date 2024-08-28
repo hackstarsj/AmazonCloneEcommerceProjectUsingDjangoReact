@@ -28,7 +28,7 @@ def getSuperAdminDynamicFormModels():
     }
 
 def checkisFileField(field):
-    return field in ['image','file','path','video','audio','profile_pic']
+    return field in ['image','file','path','video','audio','profile_pic','invoice_path']
 
 def getExludeFields():
     return ['id','created_at','updated_at','domain_user_id','added_by_user_id','created_by_user_id','updated_by_user_id','is_staff','is_superuser','is_active','plan_type','last_login','last_device','date_joined','last_ip','domain_name']

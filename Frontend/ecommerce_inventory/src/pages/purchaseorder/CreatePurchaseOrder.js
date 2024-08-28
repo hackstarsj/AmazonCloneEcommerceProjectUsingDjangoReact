@@ -2,6 +2,7 @@ import {
   Box,
   Breadcrumbs,
   Button,
+  Chip,
   Dialog,
   DialogContent,
   Divider,
@@ -24,7 +25,7 @@ import { getFormType } from "../../utils/Helper";
 import CommonInputComponent from "../../components/CommonInputComponent";
 import ManageUsers from "../users/ManageUsers";
 import ManageProducts from "../products/ManageProducts";
-import { Add, CheckCircle, Close, Delete, Save } from "@mui/icons-material";
+import { Add, CheckCircle, Close, Delete, Refresh, Save } from "@mui/icons-material";
 import JsonInputComponent from "../../components/JsonInputComponent";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
@@ -41,6 +42,10 @@ const CreatePurchaseOrder = () => {
   const [openSelectProduct, setOpenSelectProduct] = useState(false);
   const [openAddAdditionalDetails,setOpenAddAdditionalDetails]=useState(false);
   const [selectedPoItemIndex,setSelectedPoItemIndex]=useState(null)
+  const [itemTotal,setItemTotal]=useState(0);
+  const [taxTotal,setTaxTotal]=useState(0);
+  const [discountTotal,setDiscountTotal]=useState(0);
+  const [totalAmount,setTotalAmount]=useState(0);
   const methods = useForm();
   const navigate=useNavigate();
 
@@ -62,6 +67,40 @@ const CreatePurchaseOrder = () => {
     getFormFields();
   }, []);
 
+  useEffect(()=>{
+    calculateAmount()
+  },[
+    methods.watch('items'),methods.watch('discount_type'),methods.watch('items')?.length,methods.watch('discount_amount')
+  ])
+
+  const calculateAmount=()=>{
+    let itemTotal=methods.watch('items')?.reduce((acc,item)=>acc+item.quantity_ordered*item.buying_price,0)
+    let taxTotal=methods.watch('items')?.reduce((acc,item)=>acc+item.quantity_ordered*item.buying_price*item.tax_percentage/100,0);
+    let discountTotal=methods.watch('items')?.reduce((acc,item)=>{
+      if(item.discount_type==='PERCENTAGE'){
+        return acc+item.quantity_ordered*item.buying_price*item.discount_amount/100
+      }
+      else if(item.discount_type==='AMOUNT'){
+        return acc+item.discount_amount
+      }
+      else{
+        return acc
+      }
+    },0);
+    setItemTotal(itemTotal)
+    setTaxTotal(taxTotal)
+    setDiscountTotal(discountTotal)
+    setTotalAmount(!isNaN(itemTotal+taxTotal-discountTotal)?itemTotal+taxTotal-discountTotal:0)
+  }
+
+
+  useEffect(() => {
+    methods.watch('items')?.forEach((item,index) => {
+      const taxPercentage = item.tax_percentage;
+      methods.setValue(`items[${index}].tax_amount`, (item.buying_price * taxPercentage) / 100);
+    });
+  },methods.watch('items')?.map((item,index)=>{ return methods.watch(`items[${index}].tax_percentage`)}));
+
   const deleteItem=(index)=>{
     let items=methods.watch('items');
     items=items.filter((item,i)=>i!==index);
@@ -79,6 +118,7 @@ const CreatePurchaseOrder = () => {
             tempField["default"] = item[tempField?.name];
             tempField["name"] = `items[${index}].${tempField.name}`;
             return (
+              methods.watch('discount_type')!=='ITEM DISCOUNT' && (field.name==='discount_type' || field.name==='discount_amount')?<input type='hidden' name={tempField.name} {...methods.register(tempField.name)} value={field.name==='discount_type'?'NO DISCOUNT':0}/>:
               <TableCell>
                 {field.label === "Additional Details" ? (
                   <Button variant="contained" color="primary" onClick={()=>{
@@ -116,6 +156,7 @@ const CreatePurchaseOrder = () => {
         quantity_ordered: 1,
         buying_price: data.initial_buying_price,
         selling_price: data.initial_selling_price,
+        mrp: data.mrp,
       },
     ]);
     setOpenSelectProduct(false);
@@ -185,9 +226,16 @@ const CreatePurchaseOrder = () => {
                       </Button>
                     ) : (
                       <>
-                        <Typography variant="body1" sx={{ mt: 3 }}>
-                          {supplierEmail}
-                        </Typography>
+                      <Chip
+                        label={supplierEmail}
+                        color="secondary"
+                        sx={{ mt: 3 ,width:'100%',p:2}}
+                        onDelete={()=>{
+                            setSupplierEmail('')
+                            setSupplierId('')
+                            methods.setValue('supplier_id','')
+                        }}
+                      />
                         <input
                           type="hidden"
                           name="supplier_id"
@@ -197,7 +245,9 @@ const CreatePurchaseOrder = () => {
                       </>
                     )}
                   </Grid>
-                ) : (
+                ) :(['NO DISCOUNT','ITEM DISCOUNT'].includes(methods.watch('discount_type')) && field1.name==='discount_amount')?
+                  <input type='hidden' name={field1.name} {...methods.register(field1.name)} value={field1.name==='discount_type'?'NO DISCOUNT':0}/>
+                : (
                   <Grid
                     item
                     xs={12}
@@ -233,7 +283,7 @@ const CreatePurchaseOrder = () => {
                   <TableCell>SKU</TableCell>
                   {fieldType.map((item, index) =>
                     poItemFields?.[item]?.map((field, index2) => (
-                      <TableCell key={field.name}>{field.label}</TableCell>
+                      methods.watch('discount_type')!=='ITEM DISCOUNT' && (field.name==='discount_type' || field.name==='discount_amount') ? null :<TableCell key={field.name}>{field.label}</TableCell>
                     ))
                   )}
                 </TableRow>
@@ -241,6 +291,20 @@ const CreatePurchaseOrder = () => {
               <TableBody>{getPoItems()}</TableBody>
             </Table>
           </TableContainer>
+          <Grid container spacing={2} mt={2} mb={2}>
+                  
+              <Grid item xs={12} lg={6} sm={12} md={6} textAlign={"right"}>
+                </Grid>
+              <Grid item xs={12} lg={6} sm={12} md={6} >
+                <Typography variant="h6">Amount Details : <IconButton onClick={calculateAmount}><Refresh/></IconButton></Typography>
+                <Divider sx={{mb:1}}/>
+                <Typography variant="body1">Item Total: + {itemTotal}</Typography>
+                <Typography variant="body1">Tax: + {taxTotal}</Typography>
+                <Typography variant="body1">Discount: - {discountTotal}</Typography>
+                <Divider/>
+                <Typography variant="body1">Total Amount: = {totalAmount}</Typography>
+              </Grid>
+          </Grid>
           <Box justifyContent={"space-between"} display={"flex"} sx={{ mt: 2 }}>
             <Button
               variant="contained"

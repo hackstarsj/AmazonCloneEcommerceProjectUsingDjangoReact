@@ -114,7 +114,7 @@ export const getFormTypes=()=>{
 }
 
 export const formatText=(key)=>{
-    return key.charAt(0).toUpperCase()+key.slice(1).replaceAll("_"," ")
+    return key.charAt(0).toUpperCase()+key.slice(1).replaceAll("_"," ").replaceAll("Id","").replaceAll("id","")
 }
 
 
@@ -151,4 +151,28 @@ export const getFileMimeTypeFromFileName=(filename)=>{
         return "other/other";
     }
 
+}
+
+export const skipPoFields=()=>{
+    return [
+    'items',
+    'po_inwarded',
+    'po_logs',
+    'additional_details']
+}
+
+export const formatIfDateTime=(value)=>{
+    if(value && typeof value==='string'){
+        //skip Integer number values and sku values
+        if(!isNaN(value) || value===''){
+            return value;
+        }
+        //Check is String is date format or not my date format is in 2024-08-21T03:23:24.788527Z or 2024-08-23T01:21:00Z
+        if(value.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{6}Z/) || value.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/)){
+            const date=new Date(value);
+            return `${date.getDate().toString().padStart(2, '0')} ${date.toLocaleString('default',{month:'short'})} ${date.getFullYear()}, ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+        }
+        return value;
+    }
+    return value;
 }

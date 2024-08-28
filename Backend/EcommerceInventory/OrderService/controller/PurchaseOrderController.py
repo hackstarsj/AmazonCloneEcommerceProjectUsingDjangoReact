@@ -1,4 +1,4 @@
-from OrderService.models import PurchaseOrder, PurchaseOrderItems, PurchaseOrderLogs
+from OrderService.models import PurchaseOrder, PurchaseOrderInwardedLog, PurchaseOrderItemInwardedLog, PurchaseOrderItems, PurchaseOrderLogs
 from EcommerceInventory.Helpers import CommonListAPIMixin, CustomPageNumberPagination, getDynamicFormFields, renderResponse
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -6,11 +6,26 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import serializers
 
 
+class PurchaseOrderLogsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=PurchaseOrderLogs
+        fields="__all__"
 class PurchaseOrderItemSerializer(serializers.ModelSerializer):
     sku=serializers.CharField(source='product_id.sku',read_only=True)
     product_name=serializers.CharField(source='product_id.name',read_only=True)
     class Meta:
         model=PurchaseOrderItems
+        fields="__all__"
+
+class PurchaseOrderItemInwardedLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=PurchaseOrderItemInwardedLog
+        fields="__all__"
+
+class PurchaseOrderInwardedSerializer(serializers.ModelSerializer):
+    items=PurchaseOrderItemInwardedLogSerializer(many=True,source='po_item_id_inwarded_log_po_inwarded',read_only=True)
+    class Meta:
+        model=PurchaseOrderInwardedLog
         fields="__all__"
 
 class PurchaseOrderListSerializer(serializers.ModelSerializer):
@@ -29,6 +44,8 @@ class PurchaseOrderListSerializer(serializers.ModelSerializer):
 
 class PurchaseOrderSerializer(serializers.ModelSerializer):
     items=PurchaseOrderItemSerializer(many=True,source='po_id_purchase_order_items')
+    po_inwarded=PurchaseOrderInwardedSerializer(many=True,source='po_item_id',read_only=True)
+    po_logs=PurchaseOrderLogsSerializer(many=True,source='po_id_purchase_order_logs',read_only=True)
     class Meta:
         model=PurchaseOrder
         fields="__all__"
@@ -37,7 +54,6 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         items_data=validated_data.pop('po_id_purchase_order_items')
         purchaseOrder=PurchaseOrder.objects.create(**validated_data)
         for item_data in items_data:
-            item_data.update({'created_by_user_id':validated_data.get('created_by_user_id')})
             item_data.update({'domain_user_id':validated_data.get('domain_user_id')})
             PurchaseOrderItems.objects.create(po_id=purchaseOrder,**item_data)
 
@@ -52,7 +68,6 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
         PurchaseOrderItems.objects.filter(po_id=instance).exclude(id__in=items).delete()
 
         for item_data in items_data:
-            item_data.update({'created_by_user_id':validated_data.get('created_by_user_id')})
             item_data.update({'domain_user_id':validated_data.get('domain_user_id')})
 
             if 'po_id' in item_data:
@@ -118,3 +133,19 @@ class PurchaseOrderListView(generics.ListAPIView):
     @CommonListAPIMixin.common_list_decorator(PurchaseOrderListSerializer)
     def list(self,request,*args,**kwargs):
         return super().list(request,*args,**kwargs)
+
+
+class PurchaseOrderView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = PurchaseOrderSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request,id=None):
+        if not id:
+            return renderResponse(data={},message='Purchase Order Not Found',status=404)
+        po=PurchaseOrder.objects.filter(domain_user_id=request.user.domain_user_id.id,id=id).first()
+        if po:
+            serializer=PurchaseOrderSerializer(po)
+            poInwardFields=getDynamicFormFields(PurchaseOrderInwardedLog(),request.user.domain_user_id.id,skip_related=['po_id'],skip_fields=['po_item_id_inwarded_log_po_inwarded'])
+            return renderResponse(data={'data':serializer.data,'poInwardFields':poInwardFields},message='Purchase Order Details',status=200)
+        return renderResponse(data={},message='Purchase Order Not Found',status=404)
