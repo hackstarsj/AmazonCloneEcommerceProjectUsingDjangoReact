@@ -56,7 +56,7 @@ class PurchaseOrderInwardedLog(models.Model):
     id=models.AutoField(primary_key=True)
     po_id=models.ForeignKey(PurchaseOrder,on_delete=models.CASCADE,blank=True,null=True,related_name='po_item_id')
     amount_paid=models.DecimalField(max_digits=10,decimal_places=2,default=0)
-    invoice_path=models.TextField()
+    invoice_path=models.JSONField()
     invoice_number=models.CharField(max_length=255)
     notes=models.TextField()
     inwarded_by_user_id=models.ForeignKey(Users,on_delete=models.CASCADE,blank=True,null=True,related_name='inwarded_by_user_id_purchase_order_items_inwarded_log')
@@ -166,7 +166,7 @@ class SalesOrderOrderItems(models.Model):
 class SalesOrderOutWardedLog(models.Model):
     id=models.AutoField(primary_key=True)
     so_id=models.ForeignKey(SalesOrder,on_delete=models.CASCADE,blank=True,null=True,related_name='so_order_id_outwarded_log')
-    invoice_path=models.TextField()
+    invoice_path=models.JSONField()
     invoice_number=models.CharField(max_length=255)
     notes=models.TextField()
     outwarded_by_user_id=models.ForeignKey(Users,on_delete=models.CASCADE,blank=True,null=True,related_name='outwarded_by_user_id_so_order_items_outwarded_log')
